@@ -59,7 +59,7 @@ ORES aims to address these challenges by developing a set of easy-to-follow open
 In no particular order:
 - Chris Xie, Head of Open Source Strategy, Futurewei
 - Tony Shannon, Head of Digital Services, Irish Government
-- Karl Yang, CEO, Degcent (Hangzhou) Energy Technology Co., Ltd.
+- Karl Xiaofeng Yang, CEO, DEGC Energy Technology Co., Ltd.
 - Genmao Chen, CTO, Independent
 - Vivien Barnier, CEO, The EnAccess Foundation
 - Pranav Myana, CEO, Amaterra Tech
