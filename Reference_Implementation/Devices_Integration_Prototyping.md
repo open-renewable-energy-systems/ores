@@ -14,9 +14,9 @@
 - Hardware devices from multiple vendors, with in a house.
 - Optimization with grid-tie (time-based control, VPP), between houses.
 
-## Prototyping system diagram
+## Prototyping System Diagram
 
-![Alt text](./images/system_diagram.png)
+![System Diagram](./images/system_diagram.png)
 
 ## Energy Power Plane (perspective)
 
@@ -43,7 +43,7 @@
 2. Time-based Control: Optimize the energy usage based on the time duration price of the power utility, save money as much as possible.
 3. S2: eight flexibility patterns, and five control types.
 
-## ORES Problem Statement (bottom up) 
+## Problem Statement (bottom up) 
 
 Within the context of the prototyping phase#1 plan and implementation, since we will base our prototyping on the home automation platform, we can leverage those mechanism already there, it may not need to implement much. Mainly two aspects of problems are expected to develop solution and implementation so far, to describe with S2 terms here.
 1. With Resource Manager (RM): An adaption layer abstraction and standardization between the CEM (standard) communication protocol and the lower layer (inner, propriety) protocol of different ESS devices.
