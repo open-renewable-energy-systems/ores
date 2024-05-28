@@ -30,8 +30,8 @@ To get involved with the ORES Working Group:
 
     - Review the contribution guidelines to learn how to contribute to the spec.
     - Join the mailing list [here](https://lists.lfenergy.org/g/ORES)
-    - Join the real time discussion/messaging in Signal group [here](https://signal.group/#CjQKII5SsUoNqJ2aMVK4Dam_vGiwR6gPz6H9t-Xtq4mclua0EhCaoYnoIK5Ptt8rtHNb-pfk), or take part in discussions in the #ores-wg channel in the LF Energy Slack
-    - Attend Meetings: Participate in our [regular meetings](https://lists.lfenergy.org/g/ores-wg/calendar) to discuss progress and new ideas.
+    - Join the real time discussion/messaging in Signal group [here](https://signal.group/#CjQKII5SsUoNqJ2aMVK4Dam_vGiwR6gPz6H9t-Xtq4mclua0EhCaoYnoIK5Ptt8rtHNb-pfk), or take part in discussions in the [#ores-wg channel in the LF Energy Slack]( https://lfenergy.slack.com/archives/C06Q566M33L)
+    - Attend Meetings: Participate in our [regular meetings]( https://zoom-lfx.platform.linuxfoundation.org/meeting/99588239400?password=cfb16446-9247-4206-a3de-cbc32f272e81) to discuss progress and new ideas.
 
 - **Contribute**: Check out our [Contribution Guidelines](./CONTRIBUTING.md) for information on how you can contribute to the project.
 - 
