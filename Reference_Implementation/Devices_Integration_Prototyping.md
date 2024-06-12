@@ -68,7 +68,7 @@ Within the context of the prototyping phase#1 plan and implementation, since we 
   
 ## Progress Update
 
-May 15th, 2024
+June 12th, 2024
 
 ![System Electric Diagram](./images/system_electric_diagram.png)
 
