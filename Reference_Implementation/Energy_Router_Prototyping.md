@@ -2,7 +2,7 @@
 
 ## Specification: Energy Router and Architecture (value proposition)
 
-In addition to the **Open Standardization** for the current mainstream production, we propose the next generation **AC Battery** technology-based disruptive Home Grid integration system with the concept of **Energy Router** as the fundamental architecture and implementation solution. We will provide more architecture update with specification section.
+In addition to the **Open Standardization** for the current mainstream production, we propose the next generation **AC Battery** (Cascaded PCS) technology-based disruptive Home Grid integration system with the concept of **Energy Router** as the fundamental architecture and implementation solution. We will provide more architecture update with specification section.
 
 1. Power Plane (Energy Distribution)
 
