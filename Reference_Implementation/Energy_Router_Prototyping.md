@@ -2,7 +2,7 @@
 
 ## Specification: Energy Router and Architecture (value proposition)
 
-    In addition to the **Open Standardization** for the current mainstream production, we propose the next generation **AC Battery** technology-based disruptive Home Grid integration system with the concept of "Energy Router" as the fundamental architecture and implementation solution. We will provide more architecture update with specification section.
+In addition to the **Open Standardization** for the current mainstream production, we propose the next generation **AC Battery** technology-based disruptive Home Grid integration system with the concept of "Energy Router" as the fundamental architecture and implementation solution. We will provide more architecture update with specification section.
 
 1. Power Plane (Energy Distribution)
 
@@ -20,11 +20,11 @@
 
 1. AC Coupling
 
-![AC Coupling](./images/erouter_configuration_#1.png)
+![AC Coupling](./images/erouter_configuration_1.png)
 
 2. DC Coupling
 
-![DC Coupling](./images/erouter_configuration_#2.png)
+![DC Coupling](./images/erouter_configuration_2.png)
 
 3.Hybrid：AC Coupling + DC Coupling
 
@@ -34,7 +34,7 @@
 
 ## Prototyping for off grid, hybrid, outdoor.
 
-![Prototyping Hybrid](./images/energy_router_#2_hybrid.png)
+![Prototyping Hybrid](./images/energy_router_2_hybrid.png)
 
 - Use resister for device capacitor charge when connect battery first time to avoid spark.
 - Central air conditioner with soft starter, for surge capacity.
