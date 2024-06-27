@@ -1,0 +1,18 @@
+alias: ores_charge2
+description: ""
+trigger:
+  - platform: time
+    at: "22:00:00"
+condition: []
+action:
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_bat_charge
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_bat_discharge
+mode: single
