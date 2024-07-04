@@ -1,4 +1,4 @@
-# Platform
+# Safety Subsystem Prototoyping
 
 ## Protection logic
 

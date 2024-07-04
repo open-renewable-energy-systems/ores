@@ -1,4 +1,4 @@
-# Platform
+# EMS Prototyping
 
 The images in this article with the suffix "*.drawio.png" can be edited with "Draw.io".
 https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio
