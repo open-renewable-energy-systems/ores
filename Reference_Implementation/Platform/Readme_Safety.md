@@ -9,6 +9,12 @@
 - When liquefied gas sensor alarm and smoke sensor alarm are detected, stop and prohibit charging and discharging. Wait for manual reset before enabling charging and discharging.
 - When low battery voltage is detected, automatic charging is turned on to replenish power, preventing the battery from over discharging.
 
+## How to realize
+
+1. HA install "ESPHome" add-on.
+2. Install this yaml(reference) to ESP32 hardware:
+    - [ores-bat-demo.yaml](/Reference_Implementation/Platform/ores-bat-demo.yaml)
+
 ## Protect Framework
 
 Protect Framework schematic diagram:
