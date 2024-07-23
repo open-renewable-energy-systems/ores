@@ -1,0 +1,240 @@
+esphome:
+  name: esphome-web-42cc08
+  friendly_name: ESPHome Web 01
+
+esp8266:
+  board: nodemcuv2
+
+# Enable logging
+logger:
+  # 串口1输出日志
+  #hardware_uart: UART1
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "eJAys9rsCkW2DT+4gmsHenT0yUYhKEmXeRa68pmQraQ="
+
+ota:
+  #ota-password作用
+  #password参数用于设置OTA更新所需的验证密码。这个密码保护了远程更新过程，确保只有拥有正确密码的人才能上传新的固件至设备
+  #password: "7b0462fce4653e433f45dc557c8354ab"
+  password: "mivo@123"
+
+
+# 自动连接的WiFi账号密码
+wifi:
+  networks:
+    #- ssid: "MIVO_1"
+    #  password: "mivo@123"
+    #- ssid: "Ha_test"
+    #  password: "12345678"
+    - ssid: "Redmi Note 12 Turbo"
+      password: "12345678"  
+
+  # 配网热点密码
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp8266_1_wifi"
+    password: "mivo@123"
+
+
+captive_portal:
+
+
+switch:
+  - platform: gpio
+    pin:
+      number: 14
+      inverted: true
+    #buzzer蜂鸣器
+    name: "蜂鸣器"
+
+  - platform: gpio
+    pin: GPIO12
+    name: "按键触发的LED"
+    id: relay2
+    #restore_mode: ALWAYS_ON   #设备上电时候初始状态，始终在启动时将引脚初始化为 ON，好像是不行
+    restore_mode: RESTORE_DEFAULT_ON #尝试恢复状态并默认为 ON
+
+
+
+#二进制传感器
+binary_sensor:
+  - platform: gpio
+    pin: GPIO4
+    name: "按键"
+    #device_class影响不大，基本就是影响图标之类的
+    device_class: opening
+    #device_class: window
+    #没有外部上拉的情况下连接按钮或看到大量 ON/OFF 事件 在日志输出中，这通常意味着 GPIO 引脚是浮动的
+    #手动启用 ESP 上的上拉（或下拉）电阻器， 您可以使用 Pin 架构执行此操作。
+    # mode:
+    #     input: true
+    #     pullup: true
+    filters:
+      - delayed_on_off: 100ms   #消抖
+      #- delayed_on: 10ms       #消抖
+      #- delayed_off: 10ms
+
+    #on_press: 触发器: 当按键被按下时执行以下操作,按钮的连接，需要将按钮接到高电平和gpio口上
+    #按下输出低电平，松开输出高电平
+    #低电平到高电平
+    # on_press:
+    #   then:
+    #     - logger.log: "on_press"
+    #     # - switch.toggle: relay2
+    #     - switch.turn_on: relay2
+    
+    # # on_click:
+    # #   then:
+    # #     - logger.log: "on_click"
+    # #     - switch.turn_on: relay2
+    # #高电平到低电平
+    # on_release:               #低电平时候
+    #   then:
+    #     - logger.log: "on_release"
+    #     - switch.turn_off: relay2 
+    # #当收到新状态时，将触发此自动化
+    # # on_state:
+    # #   then:
+    # #     - logger.log: "on_state"
+    # #     # - switch.turn_off: relay2
+
+    on_release:               #出现低电平时候
+      then:
+        - logger.log: "on_release"
+        - switch.toggle: relay2   #相当于是状态取反
+
+  #实时读取GPIO输入状态1/0
+  #log = Sending state ON 为高电平时候
+  #log = Sending state OFF为低电平时候
+  - platform: gpio
+    pin:
+      number: GPIO16
+      #mode: INPUT_PULLUP
+    name: "io16_D0输入"
+    id: io16_sensor
+
+
+
+## web控制，添加了这2行，就可以在网页端打开设备ip;
+#web控制（需要arduino框架使用）
+web_server:
+  port: 80
+
+output:
+    #控制板子上的led
+  - pin: 2
+    id: led_pin2
+    platform: gpio
+
+    #单色灯PWM控制
+  - platform: esp8266_pwm                                  #esp32平台-ledc，esp8266平台--esp8266_pwm
+    #pin: GPIO12
+    pin: D1
+    id: my_led_output                               #为该输出设备分配唯一标识符 “my_led_output”，以便稍后在 light 组件中引用。
+    frequency: 1000 Hz                              #设置 ledc PWM 的频率为 1000 Hz
+
+
+light:
+
+  - id: led                                         #控制板子上的led
+    output: led_pin2
+    platform: binary
+    #name: "${devicename}_led"
+    name: "ESP8266上_led"
+
+    #可调节亮度的单色 LED 灯
+    # Example usage in a light
+    #  Brightness: 100%
+  - platform: monochromatic
+    output: my_led_output                            #将 LED 灯关联到之前定义的输出设备 “my_led_output”。
+    name: "Adjustable LED Light"
+    gamma_correct: 1.0                               #设置 gamma 校正系数为 1.0，实现线性亮度调节。
+    default_transition_length: 5s                    #设置默认过渡时间为 5 秒，即当亮度发生改变时，需要 5 秒的时间平滑过渡到新的亮度。
+    restore_mode: RESTORE_DEFAULT_OFF                #设置还原模式为默认关闭。在断电恢复后，LED 灯将保持关闭状态。
+
+# 测量ADC电压
+#esp8266的A0引脚，只能采集1V电压，如果需要采集3.3V，需要进行分压处理
+sensor:
+  
+  #ADC采样
+  - platform: adc                   ## 平台；
+    id: "adc_sensor"
+    unit_of_measurement: "mV"        ## 单位；
+    icon: "mdi:flower-outline"      ## 图标；
+    accuracy_decimals: 1            ## 设备值上报的最小精度；
+    pin: A0                         ## ADC引脚，只支持A0；
+    name: "ADC采集"                 ## 传感器名称；
+    update_interval: 2s             ## 数据更新时间
+    filters:                        ## 校准
+      - calibrate_linear:           ## 单位转化
+          - 0 -> 0
+          - 1.0 -> 3300
+      - sliding_window_moving_average:
+          window_size: 15
+          send_every: 15
+
+
+  #wifi信号
+  - platform: wifi_signal       # Reports the WiFi signal strength/RSSI in dB
+    name: "WiFi Signal dB"
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: "diagnostic"
+
+  - platform: copy              # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "WiFi Signal Percent"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "Signal %"
+    entity_category: "diagnostic"
+
+
+#http://sensor.local/light/sensor_led/toggle
+#因为我们使用的浏览器是get,只能获取设备的状态,并不能控制设备
+#想要控制设备,就要使用到post
+#- http_request.post: http://sensor.local/light/sensor_led/toggle
+
+http_request:
+  useragent: esphome/device
+  id: my_request
+  timeout: 30s
+
+#interval
+interval:
+  #启动了一个定时器,2s执行一次http_request.post动作
+  # - interval: 2s
+  #   then:
+  #     - http_request.post: http://sensor.local/light/sensor_led/toggle
+
+    #WiFi连接状态,这段ESPHome代码定义了一个间隔触发器，每30秒检查设备的WiFi连接状态，并根据连接状态在日志中记录相应的消息。
+  - interval: 60s
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - logger.log: "wifi Connected"
+          else:
+            - logger.log: "wifi Disconnected"
+
+
+
+#当前WiFi连接强度
+# sensor:
+#   - platform: wifi_signal       # Reports the WiFi signal strength/RSSI in dB
+#     name: "WiFi Signal dB"
+#     id: wifi_signal_db
+#     update_interval: 60s
+#     entity_category: "diagnostic"
+
+#   - platform: copy              # Reports the WiFi signal strength in %
+#     source_id: wifi_signal_db
+#     name: "WiFi Signal Percent"
+#     filters:
+#       - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+#     unit_of_measurement: "Signal %"
+#     entity_category: "diagnostic"

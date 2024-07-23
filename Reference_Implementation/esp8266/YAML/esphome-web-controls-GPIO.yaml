@@ -1,0 +1,37 @@
+esphome:
+  name: esphome-web-42cc08
+  friendly_name: ESPHome Web 01
+
+esp8266:
+  board: nodemcuv2
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "eJAys9rsCkW2DT+4gmsHenT0yUYhKEmXeRa68pmQraQ="
+
+ota:
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esphome-Web-42Cc08"
+    password: "bHJkOmqAvCyv"
+
+#buzzer蜂鸣器
+switch:
+  - platform: gpio
+    pin:
+      number: 14
+      inverted: true
+    name: "buzzer01"
+
+captive_portal:
+    
