@@ -9,6 +9,6 @@ Refer to Devices_Integration_Prototyping.MD
 - Platform: smart home energy solution platform. 
 - images: image and their source files.
 
-## AC Battery and Smart Modular Battery based new technology initiative solution
+## AC Battery and Smart Modular Battery based new technology initiative
 Refer to Energy_Router_Prototyping.md
 - Energy_Router
