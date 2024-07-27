@@ -1,6 +1,6 @@
 # Reference Implementation
 
-## LFE Summit Planning
+## LF Energy Summit 2024 Presentation
 1. Speaker (Solution): The Future of Energy with Open Renewable Energy Systems (ORES)
 - Standardization, problem driven.
 - Dis-aggregate, Smart Panel (generation vs consumption, view vs control).
@@ -12,7 +12,7 @@
 - Production setup with third party kit, short video.
 - On site AC Battery empty box. how to ship to the summit?
 
-3. Panel (Future): mainly introduce the AC battery based ESS disruptive innovation initiative
+3. Panel (Future): mainly introduce the AC battery based ESS disruptive innovation "Energy Router" initiative
 - SMB: Multilevel modular PCS.
 - Better safety, lower cost, higher efficiency.
 
