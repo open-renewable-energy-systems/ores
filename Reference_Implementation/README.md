@@ -33,4 +33,4 @@ Refer to Energy_Router_Prototyping.md
 ![Top 3D](./Energy_Router/AC_Battery/images/eRouter_top.png)
 - eRouter product box bottom view
 ![Bottom 3D](./Energy_Router/AC_Battery/images/eRouter_bottom.png)
-Todo: conduct, protection, control power, terminal, the big mba file.
+- Todo: conduct, protection, control power, terminal, the big mba file.
