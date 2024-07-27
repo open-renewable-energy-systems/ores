@@ -28,9 +28,9 @@ Refer to Energy_Router_Prototyping.md
 - eRouter Assembly View  
 ![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_front.png)
 - eRouter Front View
-![Front 3D](./Energy_Router/AC_Battery/images/eRouter_front.png =766x487)
+![Front 3D](./Energy_Router/AC_Battery/images/eRouter_front.png)
 - eRouter Top View
-![Top 3D](./Energy_Router/AC_Battery/images/eRouter_top.png =766x109)
+![Top 3D](./Energy_Router/AC_Battery/images/eRouter_top.png)
 - eRouter Bottom View
-![Bottom 3D](./Energy_Router/AC_Battery/images/eRouter_bottom.png =766x98)
+![Bottom 3D](./Energy_Router/AC_Battery/images/eRouter_bottom.png)
 Todo: conduct, protection, control power, terminal, the big mba file.
