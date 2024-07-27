@@ -25,8 +25,10 @@ Refer to Devices_Integration_Prototyping.MD
 
 ## Energy Router: AC Battery and Smart Modular Battery based new technology initiative
 Refer to Energy_Router_Prototyping.md
-- eRouter product box assembly view  
+- eRouter product box assembly front view  
 ![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_front.png)
+- eRouter product box assembly bottom view  
+![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_bottom.png)
 - eRouter product box front view
 ![Front 3D](./Energy_Router/AC_Battery/images/eRouter_front.png)
 - eRouter product box top view
