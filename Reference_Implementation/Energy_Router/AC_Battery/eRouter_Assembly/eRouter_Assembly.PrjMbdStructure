@@ -1,0 +1,18 @@
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U14|Source=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U13|Source=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U12|Source=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U11|Source=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_MCU板 V0.1.2 - 2024.7.1\SMB200V2_MCU板.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U24|Source=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U23|Source=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U22|Source=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U21|Source=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB200V2_功率板B1 V0.1.2 - 2024.7.1\SMB200V2_功率板B1.PrjPCB
+Record=DiagramHierarchy|SourceDocument=MultiBoardSchematic1.MbsDoc|Kind=Multi-board Schematic Module|Designator=U0|Source=..\SMB_A型_主控板 V0.2.1 - 2024.7.1\SMB_A型_主控板.PrjPCB
+Record=SubProject|SourceDocument=MultiBoardSchematic1.MbsDoc|ProjectPath=..\SMB_A型_主控板 V0.2.1 - 2024.7.1\SMB_A型_主控板.PrjPCB
