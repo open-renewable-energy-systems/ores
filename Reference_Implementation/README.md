@@ -23,8 +23,12 @@
   - ![Solar Micro Inverter Power](./Devices/images/micro_inverter_power.png)
   - House Power Total
   - ![House Power Total](./Devices/images/house_power_total.png)
-  - todo：revise, with English.
-- Production setup with third party kit, short video.
+  - todo：revise.
+- Production setup with third party kit, short video?
+  - Solar Panel
+  - ![Solar Panel](./Devices/images/kit_solar.jpg)
+  - Battery, Hybrid Inverter
+  - ![Battery & Inverter](./Devices/images/kit_bat_inverter.jpg)
 - On site AC Battery empty box. how to ship to the summit?
   - ![AC Battery Box](./Devices/images/smb_box.png)
 3. Panel (**Future**): mainly introduce the AC battery based ESS disruptive innovation "Energy Router" initiative
