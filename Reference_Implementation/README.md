@@ -26,7 +26,7 @@
   - todo：revise, with English.
 - Production setup with third party kit, short video.
 - On site AC Battery empty box. how to ship to the summit?
-
+  - ![AC Battery Box](./Devices/images/smb_box.png)
 3. Panel (**Future**): mainly introduce the AC battery based ESS disruptive innovation "Energy Router" initiative
 - SMB: Multilevel modular PCS.
 - Better safety, lower cost, higher efficiency.
