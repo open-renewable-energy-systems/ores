@@ -41,13 +41,13 @@ Refer to Devices_Integration_Prototyping.MD
 ## Energy Router: AC Battery and Smart Modular Battery based new technology initiative
 Refer to Energy_Router_Prototyping.md
 - eRouter product box assembly front view  
-![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_front.png)
+  - ![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_front.png)
 - eRouter product box assembly bottom view  
-![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_bottom.png)
+  - ![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_bottom.png)
 - eRouter product box front view
-![Front 3D](./Energy_Router/AC_Battery/images/eRouter_front.png)
+  - ![Front 3D](./Energy_Router/AC_Battery/images/eRouter_front.png)
 - eRouter product box top view
-![Top 3D](./Energy_Router/AC_Battery/images/eRouter_top.png)
+  - ![Top 3D](./Energy_Router/AC_Battery/images/eRouter_top.png)
 - eRouter product box bottom view
-![Bottom 3D](./Energy_Router/AC_Battery/images/eRouter_bottom.png)
+  - ![Bottom 3D](./Energy_Router/AC_Battery/images/eRouter_bottom.png)
 - Todo: conduct, protection, control power, terminal, the big mba file.
