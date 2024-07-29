@@ -10,19 +10,19 @@
 2. Project Demo (**Implementation**): Open Renewable Energy Systems (ORES) 
 - Development setup, based on Home Assistant and ESPHome, real time remote browser access, one setup in China another in California.
   - Home Assistant Dashboard
-    ![Home Assistant Dashboard](./Devices/images/ha_dashboard.png)
+![Home Assistant Dashboard](./Devices/images/ha_dashboard.png)
   - Home Assistant Sensor & Relay
-    ![Home Assistant Sensor & Relay](./Devices/images/ha_sensor_relay.png)
+![Home Assistant Sensor & Relay](./Devices/images/ha_sensor_relay.png)
   - Home Assistant Solar Micor Inverter
-    ![Home Assistant Solar Micro Inverter](./Devices/images/ha_solar_micor_inverter.png)
+![Home Assistant Solar Micro Inverter](./Devices/images/ha_solar_micro_inverter.png)
   - Solar Micor Inverter Voltage
-    ![Solar Micro Inverter Voltate](./Devices/images/micro_inverter_voltage.png)
+  ![Solar Micro Inverter Voltate](./Devices/images/micro_inverter_voltage.png)
   - Solar Micor Inverter Current
-    ![Solar Micro Inverter Current](./Devices/images/micro_inverter_current.png)
+  ![Solar Micro Inverter Current](./Devices/images/micro_inverter_current.png)
   - Solar Micor Inverter Power
-    ![Solar Micro Inverter Power](./Devices/images/micro_inverter_power.png)
+  ![Solar Micro Inverter Power](./Devices/images/micro_inverter_power.png)
   - House Power Total
-    ![House Power Total](./Devices/images/house_power_total.png)
+  ![House Power Total](./Devices/images/house_power_total.png)
   - todo：revise, with English.
 - Production setup with third party kit, short video.
 - On site AC Battery empty box. how to ship to the summit?
