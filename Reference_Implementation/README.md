@@ -42,7 +42,7 @@ Refer to Devices_Integration_Prototyping.md
 - Platform: smart home energy solution platform. 
 - images: image and their source files.
 
-## Energy Router: AC Battery and Smart Modular Battery based new technology initiative
+## Energy Router: AC Battery / Smart Modular Battery based new technology innovation initiative
 Refer to Energy_Router_Prototyping.md
 - eRouter product box assembly front view  
   - ![Assembly 3D](./Energy_Router/AC_Battery/images/eRouter_assembly_front.png)
