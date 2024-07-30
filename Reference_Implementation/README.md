@@ -31,7 +31,7 @@
   - ![Battery & Inverter](./Devices/images/kit_bat_inverter.jpg)
 - On site AC Battery empty box. how to ship to the summit?
   - ![AC Battery Box](./Devices/images/smb_box.png)
-3. Panel (**Future**): mainly introduce the AC battery based ESS disruptive innovation "Energy Router" initiative
+3. Panel (**Future/Innovation**): mainly introduce the AC battery based ESS disruptive innovation "Energy Router" initiative
 - SMB: Multilevel modular PCS.
 - Better safety, lower cost, higher efficiency.
 
