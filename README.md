@@ -22,26 +22,27 @@ The Open Renewable Energy Systems (ORES) Working Group was established following
 
 
 
-`ORES` is a specification that describes the standard components of a renewalbe energy system, and its standard architectures, APIs, protocols among various components of the system, and communication interfaces with the grid and with higher level services. The current specification is [here](./Specification/ORES_Spec.md). The design objective of ORES is meant to realize the [vision](#vision) of plug and play energy production and democratized  energy ecossystem participation, both as an energy producer and an energy consumer.
+`ORES` is a specification that describes the standard components of a renewalbe energy system, and its standard architectures, APIs, protocols among various components of the system, and communication interfaces with the grid and with higher level services. The current specification is [here](https://github.com/open-renewable-energy-systems/ores/blob/Dev/Specification/ORES_Spec.md). The design objective of ORES is meant to realize the [vision](#vision) of plug and play energy production and democratized  energy ecossystem participation, both as an energy producer and an energy consumer.
 
 ## Getting Started
 To get involved with the ORES Working Group:
 - **Join the Working Group**: Stay updated with the latest discussions and announcements.  .
 
-    - Review the contribution guidelines to learn how to contribute to the spec.
-    - Join the mailing list [here](https://lists.lfenergy.org/g/ORES)
-    - Join the real time discussion/messaging in Signal group [here](https://signal.group/#CjQKII5SsUoNqJ2aMVK4Dam_vGiwR6gPz6H9t-Xtq4mclua0EhCaoYnoIK5Ptt8rtHNb-pfk), or take part in discussions in the [#ores-wg channel in the LF Energy Slack]( https://lfenergy.slack.com/archives/C06Q566M33L)
-    - Attend Meetings: Participate in our [regular meetings]( https://zoom-lfx.platform.linuxfoundation.org/meeting/99588239400?password=cfb16446-9247-4206-a3de-cbc32f272e81) to discuss progress and new ideas.
+    - Review the [ORES Working Group Charter wiki](https://lfenergy.org/ORES) to learn more about ORES.
+    - Join the mailing list [here](https://lists.lfenergy.org/g/ORES).
+    - Join the real time discussion/messaging in Signal group [here](https://signal.group/#CjQKII5SsUoNqJ2aMVK4Dam_vGiwR6gPz6H9t-Xtq4mclua0EhCaoYnoIK5Ptt8rtHNb-pfk), or take part in discussions in the [#ores-wg channel in the LF Energy Slack]( https://lfenergy.slack.com/archives/C06Q566M33L).
+    - Attend Meetings: Participate in ORES WG [regular zoom meetings]( https://zoom-lfx.platform.linuxfoundation.org/meeting/99588239400?password=cfb16446-9247-4206-a3de-cbc32f272e81).
 
-- **Contribute**: Check out our [Contribution Guidelines](./CONTRIBUTING.md) for information on how you can contribute to the project.
-- 
+- **Contribute**: Check out our [Contribution Guidelines](https://github.com/open-renewable-energy-systems/ores/blob/Dev/CONTRIBUTING.md) for information on how you can contribute to the project.
+- **Repository**: Here is the [repo](https://github.com/open-renewable-energy-systems/ores).
+
 
 
 
 
 ## Resources
 - [LF Research Whitepaper](https://www.linuxfoundation.org/research/open-source-opportunity-for-microgrids)
-- [Contribution Guidelines](./CONTRIBUTING.md)
+- [Contribution Guidelines](https://github.com/open-renewable-energy-systems/ores/blob/Dev/CONTRIBUTING.md)
 
 ## License
 This project is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0). This is a project under [LF Energy and LFESS](https://lfess.energy/), more on its Github Repo [here](https://github.com/lfess).
