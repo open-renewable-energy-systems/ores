@@ -1,7 +1,7 @@
 # Reference Implementation
 
 ## LF Energy Summit 2024 Presentation
-1. Speaker (**Solution**): The Future of Energy with Open Renewable Energy Systems (ORES)
+1. Speaker (**Solution/Standardization**): The Future of Energy with Open Renewable Energy Systems (ORES)
 - Standardization, problem driven.
 - Dis-aggregate, Smart Panel (generation vs consumption, view vs control).
 - Home Grid: microgrid for smart home, grid technologies down sizing. 
