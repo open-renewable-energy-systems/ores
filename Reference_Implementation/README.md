@@ -36,7 +36,7 @@
 - Better safety, lower cost, higher efficiency.
 
 ## Existing technology and vendor solution integration
-Refer to Devices_Integration_Prototyping.MD
+Refer to Devices_Integration_Prototyping.md
 - Application: for various energy management flexibility applications.
 - Devices: for third party devices integration.
 - Platform: smart home energy solution platform. 
