@@ -17,13 +17,13 @@
   - ![Home Assistant Dashboard](./Devices/images/ha_dashboard.png)
   - Home Assistant Sensor & Relay
   - ![Home Assistant Sensor & Relay](./Devices/images/ha_sensor_relay.png)
-  - Home Assistant Solar Micorinverter
+  - Home Assistant Solar Microinverter
   - ![Home Assistant Solar Microinverter](./Devices/images/ha_solar_micro_inverter.png)
-  - Solar Micorinverter Voltage
+  - Solar Microinverter Voltage
   - ![Solar Microinverter Voltate](./Devices/images/micro_inverter_voltage.png)
-  - Solar Micorinverter Current
+  - Solar Microinverter Current
   - ![Solar Microinverter Current](./Devices/images/micro_inverter_current.png)
-  - Solar Micorinverter Power
+  - Solar Microinverter Power
   - ![Solar Microinverter Power](./Devices/images/micro_inverter_power.png)
   - House Power Total
   - ![House Power Total](./Devices/images/house_power_total.png)
