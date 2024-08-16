@@ -33,11 +33,11 @@
   - Battery, Hybrid Inverter
   - ![Battery & Inverter](./Devices/images/kit_bat_inverter.jpg)
   - Rack
-  - ![Rack](./Devices/images/production/rack.jpg)
+  - ![Rack](./images/production/rack.jpg)
   - Safety with temperature control
-  - ![Safety](./Devices/images/production/safety.jpg)
+  - ![Safety](./images/production/safety.jpg)
   - Operating Video
-  - ![Video](./Devices/images/production/video.mp4)
+  - ![Video](./images/production/video.mp4)
 - On site AC Battery demo box.
   - ![AC Battery Box](./Devices/images/smb_box.png)
 3. Panel (**Future/Innovation**): Introduction to AC Battery Based ESS Disruptive Innovation "Energy Router" Initiative
