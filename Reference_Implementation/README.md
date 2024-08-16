@@ -27,13 +27,18 @@
   - ![Solar Microinverter Power](./Devices/images/micro_inverter_power.png)
   - House Power Total
   - ![House Power Total](./Devices/images/house_power_total.png)
-  - todo：revise.
 - Production Setup with Third Party Kit with video
   - Solar Panel
   - ![Solar Panel](./Devices/images/kit_solar.jpg)
   - Battery, Hybrid Inverter
   - ![Battery & Inverter](./Devices/images/kit_bat_inverter.jpg)
-- On site AC Battery empty box. how to ship to the summit?
+  - Rack
+  - ![Rack](./Devices/images/production/rack.jpg)
+  - Safety with temperature control
+  - ![Safety](./Devices/images/production/safety.jpg)
+  - Operating Video
+  - ![Video](./Devices/images/production/video.mp4)
+- On site AC Battery demo box.
   - ![AC Battery Box](./Devices/images/smb_box.png)
 3. Panel (**Future/Innovation**): Introduction to AC Battery Based ESS Disruptive Innovation "Energy Router" Initiative
 - SMB: Multilevel Modular PCS.
