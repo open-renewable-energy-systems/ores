@@ -27,7 +27,7 @@
   - ![Solar Microinverter Power](./Devices/images/micro_inverter_power.png)
   - House Power Total
   - ![House Power Total](./Devices/images/house_power_total.png)
-- Production Setup with Third Party Kit with video
+- Production Setup with Third Party Kit
   - Solar Panel
   - ![Solar Panel](./Devices/images/kit_solar.jpg)
   - Battery, Hybrid Inverter
