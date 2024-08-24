@@ -37,3 +37,7 @@
    - The value generated per day: 15kWH x 0.51$/kWH = 7.6$
    - The value generated per year: 7.6$ x 365 = 2800$
    - So it shoud take about **3 years** ROI (Return Of Investment) .
+
+## Enphase， todo 
+
+- https://enphase.com/homeowners
