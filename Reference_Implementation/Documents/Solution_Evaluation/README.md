@@ -28,4 +28,4 @@
    - Energy generation per day： 3kW x 8Hours = 24 kWH
    - The value generated per day: 24kWH x 0.60$/kWH = 14.4$
    - The value generated per year: 14.4$ x 365 = 5256$
-   - So it shoud take about **1.5 - 2 years** to be profit.
+   - So it shoud take about **1.5 - 2 years** (Return Of Investment) to be profit.
