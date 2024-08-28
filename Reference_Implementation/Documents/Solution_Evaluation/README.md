@@ -17,7 +17,7 @@
    - In addition, Setting Change to Fix the issue of "Inadequate outlet charging”: 
      - 63 ENA # Auto N-PE Connection Switch Function: ENA Enable (Disable)
 
-   - For Information
+   - For Information:
      - 68 AC output phase mode # 180 (default) represents the split-phase mode
    
 3. **EV Charging**
