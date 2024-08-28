@@ -34,7 +34,7 @@
 
 5. **Initial Value Proposition Analysis**
    - For ESS (Energy Storage System), two batteries (48VDC 100AH each) can hold up to 10kWH energy with an active capacity of 8kWH.
-   - Solar power generates an average at 5 hours per day, varying from 0-3 hours during winter to 6-8 hours during summer，for a total of about 15kWH per day. There for, solar power can fully charge the ESS and provide an extra supply for home usage during summer, but may not be enough to charge the ESS during winter or rainy seasons.
+   - Solar power generates an average at 5 hours per day, varying from 0-3 hours during winter to 6-8 hours during summer，for a total of about 15kWH per day. Therefor, solar power can fully charge the ESS and provide an extra supply for home usage during summer, but may not be enough to charge the ESS during winter or rainy seasons.
    - Energy Generation per Day：3kW x 5Hours = 15kWH
    - Value Generated per Day: 15kWH x $0.51/kWH = $7.6
    - Value Generated per Year: $7.6 x 365 = $2800
