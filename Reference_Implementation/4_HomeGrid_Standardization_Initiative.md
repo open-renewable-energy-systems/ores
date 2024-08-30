@@ -22,21 +22,21 @@
 
 # Progress - Run Separate Components Relatively Independent
 
-1. **MicroInverter**
+1. **MicroInverter** 
 ![MicroInverter](./images/HomeGrid_Standardization_Progress_1_MicroInverter.png)
   
-2. **Grid Tie** 
+2. **Grid Tie**  
 ![GridTie](./images/HomeGrid_Standardization_Progress_2_GridTie.png)
  
-3. **Off Grid Hybrid**
+3. **Off Grid Hybrid** 
 ![OffGrid](./images/HomeGrid_Standardization_Progress_3_OffGrid_Hybrid.png)
 
-4. **Software Defined EMS** 
+4. **Software Defined EMS**  
 ![EMS](./images/HomeGrid_Standardization_Progress_4_EMS.png)
   
 # Plan - Integrate Off Grid and Grid Tie Together
 
-5. **Start from Smart Panel**
+5. **Start from Smart Panel** 
 ![Smart Panel](./images/HomeGrid_Standardization_Plan_5_SmartPanel.png)
    - Manual Switch
    - By Software Defined EMS
