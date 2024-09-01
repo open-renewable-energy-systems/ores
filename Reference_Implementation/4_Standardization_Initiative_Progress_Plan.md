@@ -2,7 +2,7 @@
 
 ![Standardization](./images/HomeGrid_Standardization_Initiative.png)
 
-1. **Home Grid & Smart Panel**
+1. **Power Plane / Home Grid & Smart Panel**
   - Grid tie system with **current source** type device (classic grid following) feature.
   - Off grid system with **voltage source** type device (cutting edge grid forming) feature.
   - **Switch and transition** between grid tie and off grid mode.
