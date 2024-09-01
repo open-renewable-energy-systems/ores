@@ -24,6 +24,7 @@ struct dq_controller
 {
    int id_err_integ = 0;
    int iq_err_integ = 0;
+
    void dq_PI(float d_ref, // d 轴目标值
               float q_ref, // q 轴目标值
               float d_est, // d 轴估计值
@@ -35,10 +36,17 @@ struct dq_controller
               PIGain gains, // 控制器增益
               float dt,     // 时间周期
               float max_derrInteg,  // 最大d轴累计误差
-              float max_qerrInteg) // 最大 q 累计误差
+              float max_qerrInteg, 
+              bool reset_Iterm
+              ) // 最大 q 累计误差
    {
        float d_err = d_est - d_ref;
        float q_err = q_est - q_ref;
+       if(reset_Iterm) 
+       { 
+         id_err_integ = 0;
+         iq_err_integ = 0;
+       }
 
        id_err_integ += d_err*dt;
        iq_err_integ += d_err*dt;
