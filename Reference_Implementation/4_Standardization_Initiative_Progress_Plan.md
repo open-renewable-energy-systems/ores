@@ -1,4 +1,4 @@
-# Home Grid Standardization Initiative
+# Standardization Reference Implementation Initiative, Progress & Plan
 
 ![Standardization](./images/HomeGrid_Standardization_Initiative.png)
 
