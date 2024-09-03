@@ -1,3 +1,6 @@
+#ifndef CONTROLLER_H_
+#define CONTROLLER_H_
+
 #include <stdio.h>
 #include <stdint.h>
 #include <cmath>
@@ -12,7 +15,6 @@
 #include <queue>
 
 # define PI 3.141592653589 
-# define NOMM 8       // number of max modules
 
 struct PIGain
 {
@@ -31,8 +33,8 @@ struct dq_controller
               float q_est, // q 轴估计值
               float ud_grid, // d 轴电网电压，即为电网电压最大值
               float uq_grid, // q 轴电网电压， 为0
-              float ud_smb, // d轴smb期望到达电压
-              float uq_smb, // q轴smb期望到达电压
+              float & ud_smb, // d轴smb期望到达电压
+              float & uq_smb, // q轴smb期望到达电压
               PIGain gains, // 控制器增益
               float dt,     // 时间周期
               float max_derrInteg,  // 最大d轴累计误差
@@ -47,7 +49,6 @@ struct dq_controller
          id_err_integ = 0;
          iq_err_integ = 0;
        }
-
        id_err_integ += d_err*dt;
        iq_err_integ += d_err*dt;
        if(id_err_integ >  max_derrInteg) id_err_integ = max_derrInteg;
@@ -60,7 +61,9 @@ struct dq_controller
        float fd_d = gains.Pgain_21 * d_err + gains.Pgain_22*q_err; // feedback with P
        fd_d       += gains.Igain_11 * id_err_integ + gains.Igain_12 * id_err_integ; // feedback with I 
        fd_q       += gains.Igain_21 * id_err_integ + gains.Igain_22 * iq_err_integ; // feedback with I
-       ud_smb      = ud_grid - fd_d; // with feeedforward
-       uq_smb      = uq_grid - fd_q; // with feedforward 
+       ud_smb      = -fd_d +  ud_grid ; // with feeedforward
+       uq_smb      = -fd_q +  uq_grid; // with feedforward 
    }
 };
+
+#endif
