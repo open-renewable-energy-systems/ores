@@ -1,0 +1,173 @@
+
+/// @brief 历史数据缓冲；push和get时间复杂度o(1), 
+struct Data_buffer
+{
+   float data[MAX_LEN_ARRAY];  // current or voltage measurement
+   float angle[MAX_LEN_ARRAY]; // angle relative to 0 phase
+   int   curr_index = -1;      // last valid data index  
+   bool ready_to_loop = false;
+   
+   /// @brief push value to a fixed size array, the position is indicated by curr_index 
+   /// @param val value to push to the array 
+   /// @param phase angle to push to the array 
+   void push(float val, float phase)
+   {
+      this->sanityCheckAngle(phase); // 确保后面的push的angle 大于前面的angle
+      curr_index = (curr_index+2)%MAX_LEN_ARRAY -1; //确保单签active index不过界
+      data[curr_index]  = val;   // push 数值
+      angle[curr_index] = phase; // push 数值
+      if(!ready_to_loop && curr_index == MAX_LEN_ARRAY-1) ready_to_loop = true; // 数组第一次填满
+   }
+
+   bool getValues(float & curr_val, float & pre_val, float & delt_angle, int delt_index)
+   {
+      float pre_angle, curr_angle = 0.0;
+      if (!ready_to_loop && curr_val <= 0 ) return false;
+      curr_val   = data[curr_index];
+      curr_angle = angle[curr_index];
+      if (!ready_to_loop && curr_index  < delt_index)
+      {
+        pre_val    = data[0];
+        pre_angle  = angle[0];
+        delt_angle = curr_angle - pre_angle;
+      }
+      else
+      {
+         int pre_index  = curr_index - delt_index;
+         if (pre_index < 0) pre_index += MAX_LEN_ARRAY;
+         this->cleanAngle(pre_index, curr_index);
+         pre_val    = data[pre_index];
+         pre_angle   = angle[pre_index];
+         delt_angle = curr_angle - pre_angle;
+      }
+
+      if(delt_angle < EPS) return false;
+      else return true;
+   }
+   /// @brief  ensure the insert angle phase is bigger than the previous value
+   /// @param phase 
+   void sanityCheckAngle(float & phase)
+   {
+      if(curr_index==-1) return;
+      while (phase < angle[curr_index]) phase += 2*PI + phase;
+   }
+
+   /// @brief clean the first valid angle to be in descired rangle (e.g. [0, 2*PI])
+   /// @param pre_index: the most left index to look at
+   /// @param cur_index: the current index
+   /// @param low_bound: low bound of angle 
+   /// @param high_bound: high bound of angle 
+   void cleanAngle(int pre_index, int cur_index, float low_bound = 0.0, float high_bound = 2*PI)
+   {
+      if(pre_index > cur_index) return;
+      
+      while (angle[pre_index] > high_bound)
+         {
+            int temp_index = pre_index;
+            while(temp_index <= cur_index)
+            {
+               angle[temp_index] = angle[temp_index] - 2*PI;
+               temp_index++;
+            }
+         }
+
+      while (angle[pre_index] < low_bound)
+      {
+         int temp_index = pre_index;
+         while(temp_index <= cur_index)
+         {
+            angle[temp_index] = angle[temp_index] + 2*PI;
+            temp_index++;
+         }
+      }
+   };
+
+   void reset()
+   {
+      curr_index = -1;
+      ready_to_loop = false;
+   }
+};
+
+struct Clarke_transform_1phase_complex
+{
+   Data_buffer data_buffer;
+   Clarke_transform_1phase_complex(){};
+
+   void resetDataBuffer()
+   {
+      data_buffer.reset();
+   }
+   // A * [sin(b) + sin(a)] = 2Asin[(a+b)/2] * cos([(b-a)/2.0])
+   // A * [sin(b) - sin(a)] = 2Acos[(a+b)/2] * sin([(b-a)/2.0])
+   bool transform( float curr_val,       // 当前测量值
+                   float curr_angle,     // 当前测量相位,对于0相位
+                   float & alpha,        // 返回alpha值
+                   float & beta,         // 返回beta值
+                   float & return_angle, // 返回角度
+                   int     delt_index = 1,
+                   float max_ang_delt = PI/2.0,  //跟之前测量的最大相位角度差，控制估算的鲁棒性
+                   float min_ang_delt = PI/8.0 // 跟之前测量的最小相位角差，控制估算的鲁棒性
+                   )
+   {
+      float m2, m1 = 0.0;
+      float delt_angle = 0.0;
+      /// first push, return false
+      if(data_buffer.curr_index ==-1) 
+      { 
+         data_buffer.push(curr_val, curr_angle); // if empty, push;
+         return false;
+      }
+      
+      data_buffer.push(curr_val, curr_angle);
+      /// return false if buffer data is not long enought
+      if(data_buffer.getValues(m2, m1, delt_angle, delt_index)) return false;
+
+      float temp1  = cos(delt_angle/2.0);
+      float temp2  = sin(delt_angle/2.0);
+
+      if(abs(temp1)<EPS) temp1 = EPS;
+      if(abs(temp2)<EPS) temp2 = EPS;
+
+      float alpha    = (m2+m1) / temp1 / 2.0;
+      float beta     = (m2-m1) / temp2 / 2.0;
+
+      return_angle = curr_angle - delt_angle/2.0;
+      while(return_angle > 2.0*PI + EPS)    return_angle -= 2*PI;
+      while(return_angle < 0.0    - EPS)    return_angle += 2*PI;
+
+      if(delt_angle  > max_ang_delt  ) return false;
+      if (delt_angle > min_ang_delt ) return false;
+   }
+};
+
+
+/// @brief 历史数据缓冲；push和get时间复杂度o(1), 
+struct Data_buffer // 假定均匀采样
+{
+   float data[MAX_LEN_ARRAY];  // current or voltage measurement
+   int   curr_index = -1;      // last valid data index  
+   bool  ready_to_loop = false;
+   
+   /// @brief push value to a fixed size array, the position is indicated by curr_index 
+   void push(float val)
+   {
+      curr_index = curr_index%MAX_LEN_ARRAY; //确保单签active index不过界
+      data[curr_index]  = val;   // push 数值
+      if(!ready_to_loop && curr_index == MAX_LEN_ARRAY-1) ready_to_loop = true; // 数组第一次填满
+   }
+
+   bool getValues(float & curr_val, float & pre_val, int delt_index)
+   {
+      if (!ready_to_loop && curr_val < delt_index ) return false;
+      curr_val   = data[curr_index];
+      int pre_index  = (curr_index - delt_index)%MAX_LEN_ARRAY;
+      pre_val    = data[pre_index];
+      return true;
+   }
+   void reset()
+   {
+      curr_index = -1;
+      ready_to_loop = false;
+   }
+};
