@@ -1,6 +1,6 @@
 # Innovation "AC Battery" Technology Based ESS Initiative
 
-- SMB: Multilevel Modular PCS.
+- SMB: Smart Modular Battery, Multilevel Cascaded PCS.
 - Safer, Lower Cost, Higher Efficiency.
   - ![AC Battery Box](./Devices/images/smb_box.png)
 
