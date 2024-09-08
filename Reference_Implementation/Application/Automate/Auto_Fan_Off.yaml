@@ -1,0 +1,15 @@
+alias: Auto_Fan_Off
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.was1_shtc3_temperature
+    below: 30
+condition: []
+action:
+  - action: switch.turn_off
+    target:
+      entity_id:
+        - switch.ores_bat_demo_sw_fan
+    data: {}
+mode: single

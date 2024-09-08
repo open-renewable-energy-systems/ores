@@ -1,0 +1,64 @@
+alias: Auto_ChDisch
+description: ""
+trigger:
+  - platform: time_pattern
+    minutes: /1
+condition: []
+action:
+  - if:
+      - condition: state
+        entity_id: switch.ores_bat_demo_sw_bat_charge
+        state: "on"
+        for:
+          hours: 0
+          minutes: 15
+          seconds: 0
+    then:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.ores_bat_demo_sw_bat_charge
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.ores_bat_demo_sw_bat_discharge
+  - if:
+      - condition: state
+        entity_id: switch.ores_bat_demo_sw_bat_discharge
+        state: "on"
+        for:
+          hours: 0
+          minutes: 15
+          seconds: 0
+    then:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.ores_bat_demo_sw_bat_discharge
+  - if:
+      - condition: state
+        entity_id: switch.ores_bat_demo_sw_bat_discharge
+        state: "off"
+        for:
+          hours: 0
+          minutes: 15
+          seconds: 0
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: switch.ores_bat_demo_sw_bat_charge
+            state: "off"
+            for:
+              hours: 0
+              minutes: 4
+              seconds: 0
+    then:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.ores_bat_demo_sw_bat_charge
+mode: single

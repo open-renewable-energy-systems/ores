@@ -1,0 +1,15 @@
+alias: Auto_Fan_On
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.was1_shtc3_temperature
+    above: 35
+condition: []
+action:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_fan
+mode: single
