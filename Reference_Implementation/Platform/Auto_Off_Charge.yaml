@@ -1,0 +1,15 @@
+alias: Auto_Off_Charge
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.ores_bat_demo_bat_voltage
+    above: 13.5
+condition: []
+action:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_bat_charge
+mode: single

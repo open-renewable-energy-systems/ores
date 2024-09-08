@@ -1,0 +1,15 @@
+alias: Auto_On_Charge
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.ores_bat_demo_bat_voltage
+    below: 12
+condition: []
+action:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_bat_charge
+mode: single

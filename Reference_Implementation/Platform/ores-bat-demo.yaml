@@ -13,10 +13,11 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key: "12345678901234567890123456789012345678901234"
+    key: "cvx2US9fXLstKuiDGusu1jmS4dwLvKbditSvsjBsF4o="
 
 ota:
-  password: "12345678901234567890123456789012"
+  - platform: esphome
+    password: "df887996584b4edc96ab72469c7b3f11"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -25,11 +26,11 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Ores-Bat-Demo Fallback Hotspot"
-    password: "123456789012"
+    password: "FC5XSYXDsDJ1"
 
 captive_portal:
     
-web_server:
+web_server: 
   port: 80
 
 switch:
@@ -47,44 +48,85 @@ switch:
       inverted: False
     name: "SW_Bat_Discharge"
 
-sensor:
-  - platform: adc
-    id: "Bat_Voltage"
-    icon: "mdi:alarm-panel"
-    unit_of_measurement: "V"
-    attenuation: 11dB
-    accuracy_decimals: 2
-    pin: 34
-    name: "Bat_Voltage"
-    update_interval: 0.1s
-    raw: True
-    filters:
-      - multiply: 0.00387
-      - sliding_window_moving_average:
-          window_size: 10
-          send_every: 10
-    on_value_range:
-      - below: 10.5
-        then:
-          - logger.log: "Low voltage"
-          - switch.turn_off: SW_Bat_Discharge
-      - above: 15.0
-        then:
-          - logger.log: "High voltage"
-          - switch.turn_off: SW_Bat_Charge
+  - platform: gpio
+    id: "SW_BeepLEDWarning"
+    pin:
+      number: 23
+      inverted: False
+    name: "SW_BeepLEDWarning"
 
-  - platform: adc
-    id: "Bat_Current"
-    icon: "mdi:alarm-panel"
-    unit_of_measurement: "A"
+  - platform: gpio
+    id: "SW_WorkLED"
+    pin:
+      number: 15
+      inverted: False
+    name: "SW_WorkLED"
+
+  - platform: gpio
+    id: "SW_Fan"
+    pin:
+      number: 2
+      inverted: False
+    name: "SW_Fan"
+
+time:
+  - platform: sntp
+    id: led_time
+    timezone: Asia/Shanghai
+    on_time:
+      # Every 1 seconds
+      - seconds: /1
+        then:
+          - switch.toggle: SW_WorkLED
+
+sensor:
+  - platform: adc          
+    id: "Bat_Voltage"
+    icon: "mdi:alarm-panel"       
+    unit_of_measurement: "V"     
     attenuation: 11dB
-    accuracy_decimals: 2
-    pin: 35
-    name: "Bat_Current"
-    update_interval: 0.1s
+    accuracy_decimals: 2         
+    pin: 34                      
+    name: "Bat_Voltage"          
+    update_interval: 0.1s        
     raw: True
     filters:
-      - lambda: return (x - 1930) * (12.5f / 2048);
+      - multiply: 0.0047
       - sliding_window_moving_average:
-          window_size: 10
-          send_every: 10
+          window_size: 100
+          send_every: 100
+    on_value_range:               
+      - below: 10.5               
+        then:                        
+          - logger.log: "低压"
+          - switch.turn_off: SW_Bat_Discharge
+          - switch.turn_on: SW_BeepLEDWarning
+      - above: 10.5             
+        below: 15.0             
+        then:                        
+          - switch.turn_off: SW_BeepLEDWarning
+      - above: 15.0               
+        then:
+          - logger.log: "高压"
+          - switch.turn_off: SW_Bat_Charge
+          - switch.turn_on: SW_BeepLEDWarning
+
+  - platform: adc                
+    id: "Bat_Current"
+    icon: "mdi:alarm-panel"      
+    unit_of_measurement: "A"     
+    attenuation: 11dB
+    accuracy_decimals: 2         
+    pin: 35                      
+    name: "Bat_Current"          
+    update_interval: 0.1s        
+    raw: True
+    filters:
+      - lambda: return ((x - 1930) * (12.5f / 2048) - 0.25);  
+      - sliding_window_moving_average:
+          window_size: 100
+          send_every: 100
+
+
+
+
