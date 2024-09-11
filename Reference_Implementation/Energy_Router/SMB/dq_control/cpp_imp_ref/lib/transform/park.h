@@ -11,6 +11,8 @@
 #include <iostream>
 #include <assert.h>     /* assert */
 #include "filter.h"
+#include <stdexcept>
+#include <exception>
 
 # define PI 3.141592653589 
 
@@ -33,48 +35,41 @@ struct Park_1phase
 };
 
 #define FILTER_TYPE_LPS 0
-#define FILTER_TYPE_NOTCH 1
+#define FILTER_TYPE_IIR 1
 
 struct Park_1phase_w_handy_filter
 {
-     Config_low_pass_filter config;
-     Low_pass_filter * lps_d;
-     Low_pass_filter * lps_q;
-     IIRFilter * iir_filter_d;
-     IIRFilter * iir_filter_q;
-     int type = 0;
+     Low_pass_filter  lps_d;
+     Low_pass_filter  lps_q;
+     IIRFilter        iir_filter_d;
+     IIRFilter        iir_filter_q;
+     int              type = 0;
 
-     ///// type - LPS_TYPE, IIR_TYPE
-     ////  hz - cutoff freq for lps, notch freqc for notch converter
-     ///  ts - sampling time
-     Park_1phase_w_handy_filter(int type, float hz, float ts): 
-     type(type)
-     {
-        if(type == FILTER_TYPE_LPS)
-        {
-          config.setT(ts);
-          config.setTao(1.0/(2.0*2*PI*hz));
-          * lps_d =   Low_pass_filter(config);
-          * lps_q =   Low_pass_filter(config);
-        }
-        else if(type == FILTER_TYPE_NOTCH)
-        {
-           if(hz = 150) {
-             * iir_filter_d = Notch_Fc50Hz_Fs1k_BW40Hz_3x;
-             * iir_filter_q = Notch_Fc50Hz_Fs1k_BW40Hz_3x;
-           }
-           else if(hz = 250) {
-              * iir_filter_d = Notch_Fc50Hz_Fs1k_BW80Hz_5x;
-              * iir_filter_q = Notch_Fc50Hz_Fs1k_BW80Hz_5x;
-           }
-           else {
-              * iir_filter_d = Notch_Fc50Hz_Fs1k_BW20Hz_2x;
-              * iir_filter_q = Notch_Fc50Hz_Fs1k_BW20Hz_2x; 
-            }
-        }
+     Park_1phase_w_handy_filter(float T, float hz = 50.0, uint8_t mode = 1, float k = 1.0)// use lps filter, T -sampling time, hz - cutoff freq
+     : lps_d(T, 1.0/(2.0*PI*hz), k, mode)
+     , lps_q(T, 1.0/(2.0*PI*hz), k, mode)
+     , iir_filter_d(2) // default to 2nd order
+     , iir_filter_q(2) //default to 2nd order
+     , type(FILTER_TYPE_LPS)
+     {};
 
-        else {};
-     };
+
+    Park_1phase_w_handy_filter(int order, float ts, float *a, float *b)// IIR filter init - method 1
+     : lps_d()
+     , lps_q()
+     , iir_filter_d(order, a, b)
+     , iir_filter_q(order, a, b) 
+     , type(FILTER_TYPE_IIR)
+     {};
+
+
+    Park_1phase_w_handy_filter(IIRFilter d_filter, IIRFilter q_filter) // IIR filter init - method2 
+     : lps_d()
+     , lps_q()
+     , iir_filter_d(d_filter)
+     , iir_filter_q(q_filter)
+     , type(FILTER_TYPE_IIR)
+    {};
 
      void transform(float alpha, float beta, float &d, float &q, float & m,
                    float wt)
@@ -82,14 +77,14 @@ struct Park_1phase_w_handy_filter
             Park_1phase::transform(alpha, beta, d, q, m, wt);
             if(type==FILTER_TYPE_LPS)
             {
-              d = lps_d->update(d);
-              q = lps_q->update(q);
+              d = lps_d.update(d);
+              q = lps_q.update(q);
               m = sqrt(d*d+q*q);
             }
             else
             {
-              iir_filter_d->filter(d);
-              iir_filter_q->filter(q);
+              iir_filter_d.filter(d);
+              iir_filter_q.filter(q);
               m  = sqrt(d * d + q*q);
             }
         };

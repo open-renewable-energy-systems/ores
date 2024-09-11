@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+  float* b; // 分子系数
+  float* a; // 分母系数
+  float* x; // 输入缓存
+  float* y; // 输出缓存
+  int order; // 阶次
+} IIRFilter;
+
+IIRFilter* iir_filter_create(int order, float* b, float* a) {
+  IIRFilter* filter = (IIRFilter*)malloc(sizeof(IIRFilter));
+  filter->order = order;
+  filter->b = (float*)malloc(order * sizeof(float));
+  filter->a = (float*)malloc(order * sizeof(float));
+  filter->x = (float*)malloc(order * sizeof(float));
+  filter->y = (float*)malloc(order * sizeof(float));
+
+  for (int i = 0; i < order; i++) {
+    filter->b[i] = b[i];
+    filter->a[i] = a[i];
+    filter->x[i] = 0;
+    filter->y[i] = 0;
+  }
+
+  return filter;
+}
+
+void iir_filter_destroy(IIRFilter* filter) {
+  free(filter->b);
+  free(filter->a);
+  free(filter->x);
+  free(filter->y);
+  free(filter);
+}
+
+float iir_filter_process(IIRFilter* filter, float x) {
+  float y = 0;
+  for (int i = 0; i < filter->order; i++) {
+    y += filter->b[i] * filter->x[i];
+  }
+  for (int i = 1; i < filter->order; i++) {
+    y -= filter->a[i] * filter->y[i];
+  }
+  y /= filter->a[0];
+
+  // 更新输入和输出缓存
+  for (int i = filter->order - 1; i > 0; i--) {
+    filter->x[i] = filter->x[i - 1];
+  }
+  filter->x[0] = x;
+  for (int i = filter->order - 1; i > 0; i--) {
+    filter->y[i] = filter->y[i - 1];
+  }
+  filter->y[0] = y;
+
+  return y;
+}
+
+// int main() {
+//   // 设计一个3阶IIR滤波器
+//   int order = 3;
+//   float b[] = {1.0, -1.5, 0.7, -0.2};
+//   float a[] = {1.0, -1.2, 0.4, -0.1};
+
+//   IIRFilter* filter = iir_filter_create(order, b, a);
+
+//   // 测试滤波器
+//   float x[] = {1, 2, 3, 4, 5};
+//   for (int i = 0; i < 5; i++) {
+//     float y = iir_filter_process(filter, x[i]);
+//     printf("y[%d] = %f\n", i, y);
+//   }
+
+//   iir_filter_destroy(filter);
+
+//   return 0;
+// }

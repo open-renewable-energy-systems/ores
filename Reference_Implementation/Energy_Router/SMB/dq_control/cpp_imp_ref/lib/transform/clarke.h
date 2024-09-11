@@ -14,9 +14,7 @@
 
 # define PI 3.141592653589 
 
-/// @brief alpha-beta 变换，适合高频采用场景
-   //  lpf1(config),
-   //  lpf2(config)
+/// @brief 单相 alpha-beta 变换，适合高频采用场景
 struct Clarke_transform_1phase
 {
     Config_low_pass_filter config;
@@ -57,17 +55,17 @@ struct Clarke_transform_1phase_complex
       float delt_angle = float(dsize-1) * oneStep_angle ;
       cque.push(curr_val);
       if(!cque.is_full) return false;
-      // A * [sin(b) + sin(a)] =  2Acos[(a+b)/2] * cos([(b-a)/2.0])
-      // A * [sin(b) - sin(a)] =  2Asin[(a+b)/2] * sin([(b-a)/2.0])
-      alpha    =    ( cque.back() + cque.front() ) / cos(delt_angle/2.0) / 2.0; //  sin[(a+b)/2]
-      beta     =   -( cque.back() - cque.front() ) / sin(delt_angle/2.0) / 2.0; //  -cos[(a+b)/2]
+      // A * [sin(b) + sin(a)] =  2Asin[(a+b)/2] * cos([(b-a)/2.0])
+      // A * [sin(b) - sin(a)] =  2Acos[(a+b)/2] * sin([(b-a)/2.0])
+      alpha    =    ( cque.back() + cque.front() ) / cos(delt_angle/2.0) / 2.0; //  i.e. sin[(a+b)/2]
+      beta     =   -( cque.back() - cque.front() ) / sin(delt_angle/2.0) / 2.0; //  i.e. -cos[(a+b)/2]
       return_angle   = curr_angle - delt_angle/2.0; // b - (b-a)/2 =(a+b)/2 
       return true;
    };
 
    ~Clarke_transform_1phase_complex(){}; //释放内存
 
-   void resetDataBuffer()
+   void reset()
    {
       cque.reset();
    };
