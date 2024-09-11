@@ -1,0 +1,26 @@
+alias: SmokeAndGas_Warning
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.waa1_analog_mq2_1
+    above: 200
+  - platform: numeric_state
+    entity_id:
+      - sensor.waa1_analog_mq6_1
+    above: 200
+condition: []
+action:
+  - service: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+        - switch.ores_bat_demo_sw_bat_charge
+        - switch.ores_bat_demo_sw_bat_discharge
+  - service: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.ores_bat_demo_sw_beepledwarning
+mode: single
