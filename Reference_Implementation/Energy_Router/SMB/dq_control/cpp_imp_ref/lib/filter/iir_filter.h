@@ -8,7 +8,6 @@
 #include <cstdlib>
 // #include <assert.h>     /* assert */
 
-/// 陷波滤波器（Notch Filter）
 /// IIR Filter y(n) = (B*X - A*Y)/a0 B = [b0, b1, ... bn]; A=[a1, a2, ... an]
 /// reference: meta.ai, matlab fdatool, wiki 
 struct IIRFilter
@@ -33,7 +32,7 @@ struct IIRFilter
    , b(b)
    {
       x = (float*)calloc((order+1), sizeof(float));// default 0
-      y = (float*)calloc((order+1), sizeof(float)); // default
+      y = (float*)calloc((order+1), sizeof(float)); // default 0
    }; // 2nd case create with a, b as input
    
    float filter(float & input)
@@ -80,11 +79,11 @@ struct IIRFilter
 
    struct IIRFilter operator=(IIRFilter & filter)
    {
-       this->a = filter.a;
-       this->b = filter.b;
-       this->order=filter.order;
-       this->x = filter.x;
-       this->y = filter.y;
+       this->a     = filter.a;
+       this->b     = filter.b;
+       this->order = filter.order;
+       this->x     = filter.x;
+       this->y     = filter.y;
        return *this;
    };
 

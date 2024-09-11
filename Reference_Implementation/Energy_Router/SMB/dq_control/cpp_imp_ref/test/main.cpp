@@ -55,28 +55,34 @@ int main()
       current.push_back(I);
    }
    
-   Clarke_transform_1phase clk(config1.T, 50);
-
-   Clarke_transform_1phase_complex clk2(2);
-
-   // Park_1phase prk(config2, config2);
-   Park_1phase_w_handy_filter prk(0, 10, config2.T);
-
+   Clarke_transform_1phase clk(config1.T, 50); // 基于滤波的 Clakke 变换
+   Clarke_transform_1phase_complex clk2(2);    // 基于三角函数变换的Clarke变换
+   Park_1phase_w_handy_filter prk(config2.T); // 带低通滤波的park变换
+   // 带IIR滤波器的park变换
+   // Park_1phase_w_handy_filter prk(Notch_Fc50Hz_Fs1k_BW40Hz_3x, Notch_Fc50Hz_Fs1k_BW40Hz_3x); //float T, float hz = 50.0, uint8_t mode = 1, float k = 1.0
+   
    std::ofstream file("./data.txt");
-
    for(int i = 0; i<len; i++)
    {
       float alpha, beta = 0.0;
-      float return_angle = 0.0;
+      float return_angle = 0.0; // 如果使用三角函数变换，需要返回一个新的相位
       bool filter = false;
-      float d, q, m = 0.0;
+      float d, q, m = 0.0; // m -幅值
       float oneStep_angle = abs(config1.T * omega);
+      
+      /////////alpha-beta transformation
       clk2.transform(current[i], wt[i], alpha, beta,  return_angle, oneStep_angle);
       // clk.transform(current[i], alpha, beta);
+      //////////////
+
       Alpha.push_back(alpha);
       Beta.push_back(beta);
-      // prk.transform(alpha, beta, d, q, m, wt[i], filter);
-      prk.transform(alpha, beta, d, q, m, return_angle);
+
+      ////////////alpah-beta to dq transformation
+      // Park_1phase::transform(alpha, beta, d, q, m, return_angle); // direct func call , no filter
+      prk.transform(alpha, beta, d, q, m, return_angle); // with handy filter
+      ///////////
+
       file << t[i]*1000 <<", " << sin(return_angle) << ", " << cos(return_angle) 
                         <<", " << alpha << ", " << beta << ", " << sqrt(alpha*alpha + beta*beta)
                         <<", " << d     << ", " << q    << "," << m << ", "  << std::endl;

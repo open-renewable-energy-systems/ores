@@ -56,35 +56,55 @@ struct Config_low_pass_filter
         k = k_;
     }
 
+    void setMode(uint8_t mode_)
+    { 
+      mode = mode_;
+
+    }
+
 };
 
 struct Low_pass_filter
 {
-   Low_pass_filter(){};
-   Low_pass_filter(Config_low_pass_filter & config) 
+   Low_pass_filter(){}; // default constructor
+   Low_pass_filter(float T, float tao = 1.0/(2*PI*50.0), float k = 1.0, uint8_t mode=1)
    {
-      float coeff   = config.getCoeff();
-      float omega_c = config.getOmega_c();
-      if(config.mode == 0) // 脉冲法
+     Config_low_pass_filter config;
+     config.setT(T);
+     config.setTao(tao);
+     config.setK(k);
+     config.setMode(mode);
+     this->init(config.getCoeff(), config.getOmega_c(), config.mode);
+     k = config.k;
+   };
+
+   Low_pass_filter(Config_low_pass_filter & config)
+   {
+      this->init(config.getCoeff(), config.getOmega_c(), config.mode);
+      k = config.k;
+   }
+   
+   void init(const float & coeff, const float & omega_c, const uint8_t & mode)
+   {
+      if(mode == 0) // 脉冲法
       {
         a0 = omega_c;
         a1 = 0.0;
         b1 = exp(-coeff);
       }
-      else if(config.mode == 1) // 欧拉法
+      else if(mode == 1) // 欧拉法
       {
         a0 = coeff/(1.0+coeff);
         a1 = 0.0;
-        b1 = 1.0/(1.0+coeff);
+        b1 = 1-a0;
       }
-      else if(config.mode==2) // 双线性变化
+      else if(mode==2) // 双线性变化
       {
         a0 = coeff/(coeff+2.0);
-        a1 = coeff/(coeff+2.0);
+        a1 = a0;
         b1 = -(coeff-2.0)/(coeff+2.0);
       }
-   };
-
+   }
    float update(float xn)
    {
       float yn = k * digit_filter_3input(xn, xn_1, yn_1, a0, a1, b1); // float yn = k * ( a0 * xn + a1*x_n_1 + b1 * y_n_1); 
@@ -99,7 +119,7 @@ struct Low_pass_filter
          return  ratio1 * est1 + ratio2*est2 + ratio3 * est3;
     };
 
-    struct Low_pass_filter operator=(Low_pass_filter filter)
+    struct Low_pass_filter operator=(const Low_pass_filter & filter)
    {
        this->k  = filter.k;
        this->a0 = filter.a0;
@@ -108,7 +128,8 @@ struct Low_pass_filter
        this->xn_1 = xn_1;
        this->yn_1 = yn_1;
        return *this;
-   };
+   }; // = operator （=运算符）
+
    float k = 1.0;
    float a0, a1, b1 = 0.0; // y(n) =  k * (a0*x(n) + a1*x(n-1) + b1*y(n-1))
    float xn_1, yn_1 = 0.0;// x_n_1 = x(n-1), y_n_1= y(n-1)
