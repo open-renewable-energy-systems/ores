@@ -74,18 +74,30 @@ int main()
       clk2.transform(current[i], wt[i], alpha, beta,  return_angle, oneStep_angle);
       // clk.transform(current[i], alpha, beta);
       //////////////
+   // bool transform( float curr_val,       // 当前测量值
+   //                 float curr_angle,     // 当前测量相位,对于0相位, 假定已经经过延时补偿
+   //                 float & alpha,        // 返回alpha值
+   //                 float & beta,         // 返回beta值
+   //                 float & return_angle, // 返回角度
+   //                 const float   oneStep_angle // 均匀采样相位步长
+   //                 )
 
       Alpha.push_back(alpha);
       Beta.push_back(beta);
 
       ////////////alpah-beta to dq transformation
-      // Park_1phase::transform(alpha, beta, d, q, m, return_angle); // direct func call , no filter
-      prk.transform(alpha, beta, d, q, m, return_angle); // with handy filter
+      Park_1phase::transform(alpha, beta, d, q, m, return_angle); // direct func call , no filter
+         //  void static transform(float alpha, float beta, float &d, float &q, float & m,
+         //           float wt)
+      // prk.transform(alpha, beta, d, q, m, return_angle); // with handy filter
       ///////////
+
+      std::cout << "outside" << d <<", " << q <<", " << m << std::endl; 
+
 
       file << t[i]*1000 <<", " << sin(return_angle) << ", " << cos(return_angle) 
                         <<", " << alpha << ", " << beta << ", " << sqrt(alpha*alpha + beta*beta)
-                        <<", " << d     << ", " << q    << "," << m << ", "  << std::endl;
+                        <<", " << d     << ", " << q     << "," << m << ", "  << std::endl;
    };
    
    file.close();
