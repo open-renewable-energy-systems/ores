@@ -31,6 +31,7 @@ struct Park_1phase
         d =  sin(wt) * alpha - cos(wt) * beta;
         q =  cos(wt) * alpha + sin(wt) * beta;
         m = sqrt(q*q + d*d);
+        std::cout << "inside" << d <<", " << q <<", " << m << std::endl; 
     }
 };
 
