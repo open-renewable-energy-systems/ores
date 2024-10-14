@@ -5,10 +5,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <cmath>
-#include <array>
+//#include <array>
 #include <cstdlib>
 #include <iostream>
 #include <assert.h>     /* assert */
+
+#include <stdlib.h>
 
 /// @brief impl c type of queue function with fixed size; 
 /// provide O(1) function: push, front, back
@@ -106,3 +108,4 @@ struct cqueue
 //     }
 //     ~Periodcqueue() {data.~cqueue();}; // free memory
 // };
+

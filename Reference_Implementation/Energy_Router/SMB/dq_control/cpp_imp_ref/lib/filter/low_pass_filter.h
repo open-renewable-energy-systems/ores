@@ -6,12 +6,14 @@
 #include <cmath>
 #include <map>
 #include <vector>
-#include <array>
+//#include <array>
 #include <cstdlib>
 #include <iostream>
 #include <assert.h>     /* assert */
 // reference: meta.ai & matlab fdatool
-# define PI 3.141592653589 
+# define PI 3.141592653589f
+
+#include "../../test/cfg_main.h"
 
 /// @brief  low pass filter ,referent to https://en.wikipedia.org/wiki/Low-pass_filter
 /// https://blog.csdn.net/weixin_45024950/article/details/126734025
@@ -20,16 +22,16 @@
 struct Config_low_pass_filter
 {
     uint8_t mode = 1; // 0: 脉冲法 1: 欧拉法  2: 双线性变化  https://blog.csdn.net/weixin_45024950/article/details/126734025
-    float tao    = 0.5/(PI*50.0); // tao = RC
-    float k           = 1.0;
-    float T           = 1.0;
+    float tao    = 0.5f/(PI*50.0f); // tao = RC
+    float k           = 1.0f;
+    float T           = 1.0f;
 
      Config_low_pass_filter(){};
     /// @brief get cutoff freq based on time constant tao
     /// @return cutoff freq
     float getOmega_c()
     {
-        return 1.0/tao;
+        return 1.0f/tao;
     };
     
     /// @brief get coeff of filter = sample period * cutoff freq
@@ -43,7 +45,7 @@ struct Config_low_pass_filter
     /// @param omega_c 
     void setTao(float omega_c)
     {
-      tao = 1.0/omega_c;
+      tao = 1.0f/omega_c;
     }
 
     void setT(float T_)
@@ -67,7 +69,7 @@ struct Config_low_pass_filter
 struct Low_pass_filter
 {
    Low_pass_filter(){}; // default constructor
-   Low_pass_filter(float T, float tao = 1.0/(2*PI*50.0), float k = 1.0, uint8_t mode=1)
+   Low_pass_filter(float T, float tao = 1.0f/(2*PI*50.0f), float k = 1.0f, uint8_t mode=1)
    {
      Config_low_pass_filter config;
      config.setT(T);
@@ -89,20 +91,20 @@ struct Low_pass_filter
       if(mode == 0) // 脉冲法
       {
         a0 = omega_c;
-        a1 = 0.0;
+        a1 = 0.0f;
         b1 = exp(-coeff);
       }
       else if(mode == 1) // 欧拉法
       {
-        a0 = coeff/(1.0+coeff);
-        a1 = 0.0;
+        a0 = coeff/(1.0f+coeff);
+        a1 = 0.0f;
         b1 = 1-a0;
       }
       else if(mode==2) // 双线性变化
       {
-        a0 = coeff/(coeff+2.0);
+        a0 = coeff/(coeff+2.0f);
         a1 = a0;
-        b1 = -(coeff-2.0)/(coeff+2.0);
+        b1 = -(coeff-2.0f)/(coeff+2.0f);
       }
    }
    float update(float xn)
@@ -130,9 +132,9 @@ struct Low_pass_filter
        return *this;
    }; // = operator （=运算符）
 
-   float k = 1.0;
-   float a0, a1, b1 = 0.0; // y(n) =  k * (a0*x(n) + a1*x(n-1) + b1*y(n-1))
-   float xn_1, yn_1 = 0.0;// x_n_1 = x(n-1), y_n_1= y(n-1)
+   float k = 1.0f;
+   float a0, a1, b1 = 0.0f; // y(n) =  k * (a0*x(n) + a1*x(n-1) + b1*y(n-1))
+   float xn_1, yn_1 = 0.0f;// x_n_1 = x(n-1), y_n_1= y(n-1)
 };
 #endif
 
@@ -148,3 +150,4 @@ struct Low_pass_filter
     //  Low_pass_filter lps(config1);
     // lps.update(1.0);
 // }
+

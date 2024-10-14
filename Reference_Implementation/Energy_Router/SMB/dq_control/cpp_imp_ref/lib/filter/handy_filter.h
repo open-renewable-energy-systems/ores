@@ -7,14 +7,14 @@
 #include <cmath>
 #include <map>
 #include <vector>
-#include <array>
+//#include <array>
 #include <cstdlib>
 #include <iostream>
 #include <assert.h>     /* assert */
 # include "low_pass_filter.h"
 # include "iir_filter.h"
 
-# define PI 3.141592653589 
+# define PI 3.141592653589f
 
 // 陷波滤波器（Notch Filter）
 float NF_2ndorder_Fn100_Fs1k_BW20_b[3] =  { 0.96897915136010271, -1.5678412012906751, 0.96897915136010271};
@@ -35,15 +35,15 @@ struct HandyFitler_lps_50Hz_90Delay
    HandyFitler_lps_50Hz_90Delay(float fs) 
    {
        config.mode = 0; // 0: 脉冲法 1: 欧拉法  2: 双线性变化  https://blog.csdn.net/weixin_45024950/article/details/126734025
-       config.tao  = 1.0/(2.0*PI*50.0); // tao = RC
-       config.k    = 1.0;
-       config.T    = 1.0/fs;
+       config.tao  = 1.0f/(2.0f*PI*50.0f); // tao = RC
+       config.k    = 1.0f;
+       config.T    = 1.0f/fs;
        lps1 = Low_pass_filter(config);
        lps2 = Low_pass_filter(config);
    };
    float update(float val)
    {
-    return 2.0*lps2.update(lps1.update(val));
+    return 2.0f*lps2.update(lps1.update(val));
    }
 } ;
 

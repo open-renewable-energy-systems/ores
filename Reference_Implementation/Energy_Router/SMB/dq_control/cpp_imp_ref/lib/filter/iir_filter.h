@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <cmath>
-#include <array>
+//#include <array>
 #include <cstdlib>
 // #include <assert.h>     /* assert */
 
@@ -14,10 +14,10 @@ struct IIRFilter
 {
    float *x;
    float *y;
+   int  order = 1;
    float *a;
    float *b;
    int  curr_index = 0;
-   int  order = 1;
 
    IIRFilter(const int order):order(order)
    {
