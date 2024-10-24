@@ -18,80 +18,13 @@
 
 #include "cfg_main.h"
 
-
-
-
-
-
-
-
 #ifdef COMPILE_MCU_CPP
-typedef void *      (*MALLOC_FUNC)(size_t size);
-typedef void        (*FREE_FUNC)(void *p);
-typedef void *      (*REALLOC_FUNC)(void* p, size_t want);
-typedef void *      (*CALLOC_FUNC)(size_t nmemb, size_t size);
-typedef int         (*PRINT_FUNC)(const char* format, ...);
-
-typedef void        (*CPP_IMP_REF_FUNC)(void);
-typedef void        (*CPP_SET_MALLOC_FUN)(MALLOC_FUNC malloc_fun, FREE_FUNC free_fun, REALLOC_FUNC realloc_fun, CALLOC_FUNC calloc_fun, PRINT_FUNC print_fun);
-
-MALLOC_FUNC     fun_os_malloc       = NULL;
-FREE_FUNC       fun_os_free         = NULL;
-REALLOC_FUNC    fun_os_realloc      = NULL;
-CALLOC_FUNC     fun_os_calloc       = NULL;
-PRINT_FUNC      fun_os_print        = NULL;
-
-#pragma import(__use_no_heap_region)  //声明不使用C库的堆
-extern "C" void *malloc(size_t size)
-{
-    return fun_os_malloc(size);
-}
-extern "C" void free(void* p)
-{
-    fun_os_free(p);
-}
-extern "C" void *realloc(void* p, size_t want)
-{
-    return fun_os_realloc(p, want);
-}
-extern "C" void *calloc(size_t nmemb, size_t size)
-{
-    return fun_os_calloc(nmemb, size);
-}
-
-void cpp_set_malloc_fun(MALLOC_FUNC malloc_fun, FREE_FUNC free_fun, REALLOC_FUNC realloc_fun, CALLOC_FUNC calloc_fun, PRINT_FUNC print_fun) __attribute__((section(".ARM.__at_0x08085344")));
-void cpp_set_malloc_fun(MALLOC_FUNC malloc_fun, FREE_FUNC free_fun, REALLOC_FUNC realloc_fun, CALLOC_FUNC calloc_fun, PRINT_FUNC print_fun)
-{
-    fun_os_malloc       = malloc_fun;
-    fun_os_free         = free_fun;
-    fun_os_realloc      = realloc_fun;
-    fun_os_calloc       = calloc_fun;
-    fun_os_print        = print_fun;
-}
-#else
+#include "cfg_Main_Cpp.h"
 #endif
 
-
-
-
-
-
-
-
-
-
-
-#ifdef COMPILE_MCU_CPP
-void cpp_imp_ref(void) __attribute__((section(".ARM.__at_0x08084344")));
-#else
-#endif
 void cpp_imp_ref(void)
 {
-    #ifdef COMPILE_MCU_CPP
-    if(fun_os_print == NULL) return;
-    fun_os_print("Start cpp_imp_ref print\r\n");
-    #else
-    #endif
+    printf("Start cpp_imp_ref print\r\n");
 
     std::vector<float> t;
     std::vector<float> wt;
@@ -122,7 +55,7 @@ void cpp_imp_ref(void)
     float omega = 2.0f * PI * 50.0f;
 
     #ifdef COMPILE_MCU_CPP
-    fun_os_print("len = %d\r\n", len);
+    printf("len = %d\r\n", len);
     #else
     #endif
 
@@ -168,7 +101,7 @@ void cpp_imp_ref(void)
         ///////////
 
         #ifdef COMPILE_MCU_CPP
-        fun_os_print("%u, %g, %g, %g, %g, %g, %g, %g, %g,\r\n", i, sin(return_angle), cos(return_angle), alpha, beta, sqrt(alpha * alpha + beta * beta), d, q, m);
+        printf("%u, %g, %g, %g, %g, %g, %g, %g, %g,\r\n", i, sin(return_angle), cos(return_angle), alpha, beta, sqrt(alpha * alpha + beta * beta), d, q, m);
         #else
         std::cout << "outside" << d << ", " << q << ", " << m << std::endl;
         file << t[i] * 1000 << ", " << sin(return_angle) << ", " << cos(return_angle)
@@ -178,8 +111,8 @@ void cpp_imp_ref(void)
     }
 
     #ifdef COMPILE_MCU_CPP
-    fun_os_print("very nice\r\n");
-    fun_os_print("End cpp_imp_ref print\r\n");
+    printf("very nice\r\n");
+    printf("End cpp_imp_ref print\r\n");
     #else
     file.close();
     std::cout << "very nice" << std::endl;
@@ -191,10 +124,13 @@ void cpp_imp_ref(void)
 
 
 
-
-
+#ifdef COMPILE_MCU_CPP
+#else
 int main()
 {
     cpp_imp_ref();
     return 0;
 }
+#endif
+
+
