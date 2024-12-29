@@ -20,7 +20,7 @@ void DQControllerVoltFeedback_Update(DQControllerVoltFeedback_State* state, DQCo
     
     // Negative sign added because increase in error should decrease control output
     state->vd_fb = params->kp_d * error_d + params->ki_d * state->integral_d;
-    state->vd_ff = state->vd_ref;
+    state->vd_ff = state->vd_meas;
     
     state->vd_out = state->vd_fb + state->vd_ff;
 
@@ -34,7 +34,7 @@ void DQControllerVoltFeedback_Update(DQControllerVoltFeedback_State* state, DQCo
     
     // Negative sign added because increase in error should decrease control output
     state->vq_fb = params->kp_q * error_q + params->ki_q * state->integral_q;
-    state->vq_ff = state->vq_ref;
+    state->vq_ff = state->vq_meas;
     state->vq_out = state->vq_fb + state->vq_ff;
 }
 

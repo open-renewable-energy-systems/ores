@@ -1,0 +1,41 @@
+Design a Python simulation for a single-phase grid-connected inverter controller system.
+
+System Requirements:
+1. Core Components:
+   - Controller (PI or PR controller)
+   - RL load (specify values: R = X ohm, L = Y mH)
+   - Grid voltage source (220V RMS, 50Hz)
+   - Current measurement system
+
+2. Operating Conditions:
+   - Grid: 220V RMS, 50Hz
+   - Current convention: Positive when inverter injects current into grid
+   - System should operate in dq reference frame
+   - Reference tracking for both voltage and current
+
+3. Timing Parameters:
+   - Simulation sampling time: 10µs (100kHz)
+   - Controller execution rate: 1kHz (every 100 simulation steps)
+
+4. System Disturbances:
+   - Grid harmonics: 3rd and 5th order
+   - Voltage actuator noise: 100Hz component
+   - Specify amplitude of harmonics and noise (e.g., 3% of fundamental)
+
+Required Outputs:
+1. Time-domain plots:
+   - Grid voltage and current
+   - Controller response
+   - Error signals
+
+2. Frequency-domain analysis:
+   - FFT spectrum of voltage and current
+   - THD calculations
+
+Additional Requirements:
+1. Include comments explaining the control strategy
+2. Provide tuning parameters for the controller
+3. Show steady-state and transient response
+4. Include performance metrics (e.g., settling time, steady-state error)
+
+Please provide the simulation code with clear documentation and results analysis.

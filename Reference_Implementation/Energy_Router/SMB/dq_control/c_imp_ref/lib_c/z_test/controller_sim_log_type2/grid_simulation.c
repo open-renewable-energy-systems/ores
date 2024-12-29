@@ -10,7 +10,7 @@
 #include "../../lowpass_filter_1storder/lowpass_filter_1storder.h"
 #include "../../notch_filter/notch_filter.h"
 
-#define SET_D_AXIS_AS_COS 1
+#define SET_D_AXIS_AS_COS 0
 #define USE_NOTCH_FILTER 1
 
 void init_system_params(SystemParams* params) {
@@ -23,7 +23,7 @@ void init_system_params(SystemParams* params) {
     params->omega = 2.0f * M_PI * params->signal_freq;
     params->Vg_rms = 77.0f;
     params->I_desired_rms = 6.0f;
-    params->R = 1.00f;
+    params->R = 0.43f;
     params->L = 0.009f;
     params->sim_time = 1.0f;
     printf("Debug Ts values:\n");
@@ -46,14 +46,14 @@ void simulate_system(SystemParams* params, SimulationData* data) {
     // Scale integral gains for high frequency sampling
     DQController_Params controller_params = {
         .kp_d = 1.0f * k,
-        .ki_d = 20.0f * k, // params->ratio_cntlFreqReduction,
+        .ki_d = 5.0f * k, // params->ratio_cntlFreqReduction,
         .kp_q = 1.0f * k,
-        .ki_q = 20.0f * k,  // params->ratio_cntlFreqReduction,
+        .ki_q = 5.0f * k,  // params->ratio_cntlFreqReduction,
         .omega = params->omega,
         .Ts = params->Ts_control,
         .integral_max = 100.0f,    // Increased from 300.0
         .integral_min = -100.0f,   // Increased from -300.0
-        .R = 0.0f,
+        .R = 0.00f,
         .L = 0.009f
     };
 

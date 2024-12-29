@@ -12,14 +12,14 @@
 void init_system_params(SystemParams* params) {
     params->signal_freq = 50.0f;
     params->plant_sim_freq = 1000000.0f; //
-    params->control_update_freq = 10000.0f; // 这是控制理想频率，跟sensing频率一致， 实际按照ratio_sens2control计算
-    params->ratio_cntlFreqReduction = 1; // control 频率是 sensing 频率的 1/ratio_cntlFreqReduction
+    params->control_update_freq = 1000.0f; // 这是控制理想频率，跟sensing频率一致， 实际按照ratio_sens2control计算
+    params->ratio_cntlFreqReduction = 20; // control 频率是 sensing 频率的 1/ratio_cntlFreqReduction
     params->Ts_plant_sim = 1.0f / params->plant_sim_freq;
     params->Ts_control = 1.0f / params->control_update_freq;
     params->omega = 2.0f * M_PI * params->signal_freq;
     params->Vg_rms = 230.0f;
     params->I_desired_rms = 20.0f;
-    params->R = 0.1f;
+    params->R = 1.0f;
     params->L = 0.005f;
     params->sim_time = 0.4f;
     printf("Debug Ts values:\n");
