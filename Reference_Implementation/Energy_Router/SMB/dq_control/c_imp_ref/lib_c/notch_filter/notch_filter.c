@@ -3,6 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifndef M_PI
+#define M_PI 3.1415926f
+#endif
+
+
 void notch_filter_init(NotchFilter* filter, float fs, float base_freq, float ratio) {
     filter->fs = fs;
     filter->base_freq = base_freq;
@@ -72,3 +77,4 @@ float notch_filter_apply(NotchFilter* filter, float input) {
     filter->y1 = y0;
     return y0;
 }
+

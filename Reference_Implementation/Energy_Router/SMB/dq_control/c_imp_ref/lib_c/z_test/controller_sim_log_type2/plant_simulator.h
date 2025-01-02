@@ -26,3 +26,4 @@ float PlantSimulator_Update(PlantState* state, PlantParams* params,
                           float v_inverter, float v_grid, bool cos_flag);
 
 #endif /* PLANT_SIMULATOR_H */
+

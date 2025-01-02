@@ -13,7 +13,7 @@
 #define SET_D_AXIS_AS_COS 0
 #define USE_NOTCH_FILTER 1
 
-void init_system_params(SystemParams* params) {
+void init_system_params2(SystemParams2* params) {
     params->signal_freq = 50.0f;
     params->plant_sim_freq = 100000.0f; //
     params->control_update_freq = 1000.0f; // 这是控制理想频率，跟sensing频率一致， 实际按照ratio_sens2control计算
@@ -34,14 +34,14 @@ void init_system_params(SystemParams* params) {
 
 // Replace SimulationData with LogData struct
 
-SimulationData* allocate_simulation_data(int length) {
+SimulationData* allocate_simulation_data2(int length) {
     // Use the init_log_data function from log_data_rw2.c
     return init_log_data(length);
 }
 
 float k =1.0f;
 
-void simulate_system(SystemParams* params, SimulationData* data) {
+void simulate_system2(SystemParams2* params, SimulationData* data) {
 
     // Scale integral gains for high frequency sampling
     DQController_Params controller_params = {
@@ -319,13 +319,13 @@ void simulate_system(SystemParams* params, SimulationData* data) {
     data->id[data->length-1] = data->length-1;
 }
 
-void free_simulation_data(SimulationData* data) {
+void free_simulation_data2(SimulationData* data) {
     // Use the cleanup_data function from log_data_rw2.c
     cleanup_data(data);
 }
 
 // Update save_results_to_file function to use new structure
-void save_results_to_file(const char* filename, SimulationData* data) {
+void save_results_to_file2(const char* filename, SimulationData* data) {
     FILE* fp = fopen(filename, "w");
     if (!fp) {
         printf("Error opening file %s\n", filename);
