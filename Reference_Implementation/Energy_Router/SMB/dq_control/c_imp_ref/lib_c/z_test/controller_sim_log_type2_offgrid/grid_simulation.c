@@ -114,6 +114,10 @@ void simulate_system(SystemParams* params, SimulationData* data) {
         float v_d_ref = V_ref_peak;
         float v_q_ref = 0.0f;
 
+        data->v_ref_d[n] = v_d_ref;
+        data->v_ref_q[n] = v_q_ref;
+        data->v_ref[n]   = V_ref_peak;
+
         DQControllerVoltFeedback_SetReference(&v_controller_state, v_d_ref, v_q_ref);
         DQControllerVoltFeedback_UpdateMeasurements(&v_controller_state, vd_meas, vq_meas);
         DQControllerVoltFeedback_Update(&v_controller_state, &v_controller_params);
