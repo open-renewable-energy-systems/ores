@@ -1,5 +1,5 @@
-#ifndef GRID_SIMULATION_H
-#define GRID_SIMULATION_H
+#ifndef GRID_SIMULATION2_H
+#define GRID_SIMULATION2_H
 
 #define _DEFAULT_SOURCE
 #include <stdbool.h>
@@ -27,17 +27,17 @@ typedef struct {
     int ratio_cntlFreqReduction; // Ratio of control update frequency to sensing simulation frequency
     float load_R;
     float load_L;
-    
-} SystemParams;
+
+} SystemParams2;
 
 
-typedef struct LogData SimulationData;
+typedef struct LogData SimulationData2;
 
 // Function declarations
-void init_system_params(SystemParams* params);
-SimulationData* allocate_simulation_data(int length);
-void free_simulation_data(SimulationData* data);
-void simulate_system(SystemParams* params, SimulationData* data);
-void save_results_to_file(const char* filename, SimulationData* data);
+void init_system_params2(SystemParams2* params);
+SimulationData2* allocate_simulation_data2(int length);
+void free_simulation_data2(SimulationData2* data);
+void simulate_system2(SystemParams2* params, SimulationData2* data);
+void save_results_to_file2(const char* filename, SimulationData2* data);
 
-#endif /* GRID_SIMULATION_H */
+#endif /* GRID_SIMULATION2_H */

@@ -16,7 +16,7 @@
 #define GRID_OMEGA (2.0f * M_PI * 50.0f)  // 50Hz grid frequency
 #define VOLT_FB_MODE 0 // 0: feedback based on PEKA, 1: alpha_volt
 
-void init_system_params(SystemParams* params) {
+void init_system_params2(SystemParams2* params) {
     params->signal_freq = 50.0f;
     params->plant_sim_freq = 100000.0f;
     params->control_update_freq = 1000.0f;
@@ -33,32 +33,32 @@ void init_system_params(SystemParams* params) {
     params->load_L = 0.00f;
 }
 
-// Replace SimulationData with LogData struct
+// Replace SimulationData2 with LogData struct
 
-SimulationData* allocate_simulation_data(int length) {
-    SimulationData* data = init_log_data(length);
+SimulationData2* allocate_simulation_data2(int length) {
+    SimulationData2* data = init_log_data(length);
     return data;
 }
 
-float k =1.0f;
+float k = 1.0f;
 
-void simulate_system(SystemParams* params, SimulationData* data) {
+void simulate_system2(SystemParams2* params, SimulationData2* data) {
     // Add plant simulation steps
     const int PLANT_STEPS_PER_CONTROL = (int)(params->Ts_control / params->Ts_plant_sim);
-    
+
     // Modify controller parameters - increase proportional gain and reduce integral gain
     DQControllerVoltFeedback_Params v_controller_params = {
         .kp_d = 1.0f,     // Increased from 0.0001
-        .ki_d = 1.0f/params->ratio_cntlFreqReduction,   // Reduced from 0.00005
+        .ki_d = 1.0f / params->ratio_cntlFreqReduction, // Reduced from 0.00005
         .kp_q = 1.0f,     // Increased from 0.0001
-        .ki_q = 1.0f/params->ratio_cntlFreqReduction,   // Reduced from 0.00005
+        .ki_q = 1.0f / params->ratio_cntlFreqReduction, // Reduced from 0.00005
         .Ts = params->Ts_control,
         .integral_max = 100.0f,    // Reduced from 50.0
         .integral_min = -100.0f    // Reduced from -50.0
     };
 
     // Initialize components
-    PlantParams plant_params = {
+    PlantParams2 plant_params = {
         .L = params->L,
         .R = params->R,
         .load_L = params->load_L,
@@ -69,9 +69,9 @@ void simulate_system(SystemParams* params, SimulationData* data) {
         .control_update_freq = params->control_update_freq
     };
 
-    PlantState plant_state = {0};
+    PlantState2 plant_state = {0};
     DQControllerVoltFeedback_State v_controller_state;
-    
+
     PlantSimulator_Init(&plant_state, &plant_params);
     DQControllerVoltFeedback_Init(&v_controller_state, &v_controller_params);
 
@@ -79,8 +79,8 @@ void simulate_system(SystemParams* params, SimulationData* data) {
     BetaTransform_1p curr_beta_transform_1p;
 
     BetaTransform_1p_Init(&volt_beta_transform_1p,
-                         params->signal_freq,
-                         params->control_update_freq);
+                          params->signal_freq,
+                          params->control_update_freq);
 
     float V_ref_peak = params->V_desired_rms * sqrtf(2.0f); // Set desired output voltage
     int LEN = data->length - 1;
@@ -92,13 +92,13 @@ void simulate_system(SystemParams* params, SimulationData* data) {
         float t = data->time_us[n] / 1000000.0f;
         float theta = params->omega * t;
         float theta_dq = theta - M_PI_2;
-        
+
         data->i_phase_est[n] = theta;
         data->v_cntl_tgt_phase[n] = theta;
 
         float v_meas_peak = sqrtf(data->v_grid_alpha[n] * data->v_grid_alpha[n] + data->v_grid_beta[n] * data->v_grid_beta[n]);
 
-        
+
         ////////////////////////////控制/////////////////////////////////////
         float vd_meas, vq_meas;
         if(VOLT_FB_MODE == 0) { // 如果电压只能获得峰值
@@ -132,7 +132,7 @@ void simulate_system(SystemParams* params, SimulationData* data) {
             .vq = v_q,
             .vdc = 192.0f // 给直流电压
         };
-       
+
         ///调制参数跟新：输入为电压dq， 输出为调制系数相位偏移
         modulation_result_t mod_result = dq_to_modulation_calculate(dq_voltage);
         dq_voltage.vd = mod_result.vd_adjust;
@@ -143,30 +143,30 @@ void simulate_system(SystemParams* params, SimulationData* data) {
         data->v_cntl_mod_index[n] = mod_result.index;
         printf("mod_index: %f\n", data->v_cntl_mod_index[n]);
         data->v_cntl_phase_shift[n] = mod_result.phase_shift;
-       /////////////////////电压反馈控制结束////////////////////////////////////////////
-       
-       //////////////////////////PWM控制仿真///////////////////////////////////////////
-       // Inverse DQ transform
-       if (n % params->ratio_cntlFreqReduction == 0)
-       {
-           inverse_dq_transform_1phase(v_d, v_q, theta_dq,
-                                       &data->v_smb_alpha[n + 1],
-                                       &data->v_smb_beta[n + 1]);
-          vd_last = v_d;
-          vq_last = v_q;
-        } 
-        
-        else 
-        
+        /////////////////////电压反馈控制结束////////////////////////////////////////////
+
+        //////////////////////////PWM控制仿真///////////////////////////////////////////
+        // Inverse DQ transform
+        if (n % params->ratio_cntlFreqReduction == 0)
         {
-           inverse_dq_transform_1phase(vd_last, vq_last, theta_dq,
-                                       &data->v_smb_alpha[n + 1],
-                                       &data->v_smb_beta[n + 1]);
+            inverse_dq_transform_1phase(v_d, v_q, theta_dq,
+                                        &data->v_smb_alpha[n + 1],
+                                        &data->v_smb_beta[n + 1]);
+            vd_last = v_d;
+            vq_last = v_q;
+        }
+
+        else
+
+        {
+            inverse_dq_transform_1phase(vd_last, vq_last, theta_dq,
+                                        &data->v_smb_alpha[n + 1],
+                                        &data->v_smb_beta[n + 1]);
         }
 
         // Store controller outputs
-        data->v_smb_d[n+1] = v_d;
-        data->v_smb_q[n+1] = v_q;
+        data->v_smb_d[n + 1] = v_d;
+        data->v_smb_q[n + 1] = v_q;
 
         data->v_cntl_d[n] = v_d;
         data->v_cntl_q[n] = v_q;
@@ -179,17 +179,17 @@ void simulate_system(SystemParams* params, SimulationData* data) {
 
         // Use the transformed voltage as input
 
-        data->v_grid_alpha[n+1] = PlantSimulator_Update(&plant_state, 
-                                                        &plant_params, 
-                                                        v_alpha_input);
+        data->v_grid_alpha[n + 1] = PlantSimulator_Update(&plant_state,
+                                    &plant_params,
+                                    v_alpha_input);
 
-        data->v_grid_beta[n+1]  = BetaTransform_1p_Update(&volt_beta_transform_1p, data->v_grid_alpha[n+1]);
+        data->v_grid_beta[n + 1]  = BetaTransform_1p_Update(&volt_beta_transform_1p, data->v_grid_alpha[n + 1]);
 
         // Store the plant state
-        data->i_alpha[n+1] = plant_state.current;
-        data->i_beta[n+1] = BetaTransform_1p_Update(&curr_beta_transform_1p, data->i_alpha[n+1]);
+        data->i_alpha[n + 1] = plant_state.current;
+        data->i_beta[n + 1] = BetaTransform_1p_Update(&curr_beta_transform_1p, data->i_alpha[n + 1]);
 
-        data->v_smb_alpha[n+1] = v_alpha_input;
+        data->v_smb_alpha[n + 1] = v_alpha_input;
         // Update data storage - if you need to store these values
         data->v_grid_d[n] = vd_meas;
         data->v_grid_q[n] = vq_meas;
@@ -207,21 +207,21 @@ void simulate_system(SystemParams* params, SimulationData* data) {
         // Calculate and store modulation metrics
         data->v_cntl_peak[n] = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
         data->v_cntl_valid[n] = (data->v_cntl_peak[n] <= data->v_dc[n]) ? 1.0f : 0.0f;
-    /////////////////////////PWM控制结束//////////////////////////////////////
+        /////////////////////////PWM控制结束//////////////////////////////////////
 
     }
-    
+
     printf("Simulation completed.\n");
-    save_results_to_file("simulation_results.csv", data);
+    save_results_to_file2("simulation_results.csv", data);
 }
 
-void free_simulation_data(SimulationData* data) {
+void free_simulation_data2(SimulationData2* data) {
 
     cleanup_data(data);
 }
 
-// Update save_results_to_file function to use new structure
-void save_results_to_file(const char* filename, SimulationData* data) {
+// Update save_results_to_file2 function to use new structure
+void save_results_to_file2(const char* filename, SimulationData2* data) {
     FILE* fp = fopen(filename, "w");
     if (!fp) {
         printf("Error opening file %s\n", filename);
@@ -230,11 +230,11 @@ void save_results_to_file(const char* filename, SimulationData* data) {
 
     // Write header as a single string without line breaks
     fprintf(fp, "id,time_us,i_meas,i_alpha,i_beta,i_raw_d,i_raw_q,i_notch_d,i_notch_q,"
-               "i_filtered_d,i_filtered_q,i_phase_est,v_cntl_tgt_phase,v_grid_meas,"
-               "v_grid_alpha,v_grid_beta,v_grid_d,v_grid_q,v_smb_alpha,v_smb_beta,"
-               "v_smb_d,v_smb_q,v_cntl_d,v_cntl_q,v_cntl_d_ff,v_cntl_d_fd,"
-               "v_cntl_q_ff,v_cntl_q_fd,v_cntl_alpha,v_cntl_beta,v_cntl_mod_index,"
-               "v_cntl_phase_shift,v_cntl_valid,v_cntl_peak,v_dc\n");
+            "i_filtered_d,i_filtered_q,i_phase_est,v_cntl_tgt_phase,v_grid_meas,"
+            "v_grid_alpha,v_grid_beta,v_grid_d,v_grid_q,v_smb_alpha,v_smb_beta,"
+            "v_smb_d,v_smb_q,v_cntl_d,v_cntl_q,v_cntl_d_ff,v_cntl_d_fd,"
+            "v_cntl_q_ff,v_cntl_q_fd,v_cntl_alpha,v_cntl_beta,v_cntl_mod_index,"
+            "v_cntl_phase_shift,v_cntl_valid,v_cntl_peak,v_dc\n");
 
     // Write data rows
     for (int n = 0; n < data->length; n++) {
@@ -243,16 +243,16 @@ void save_results_to_file(const char* filename, SimulationData* data) {
         float target_phase = phase_est - M_PI_2;
 
         inverse_dq_transform_1phase(
-            data->v_cntl_d[n], 
-            data->v_cntl_q[n], 
+            data->v_cntl_d[n],
+            data->v_cntl_q[n],
             target_phase,
-            &v_cntl_alpha, 
+            &v_cntl_alpha,
             &v_cntl_beta
         );
 
         // Calculate modulation index (magnitude of control voltage vector)
         float mod_index = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
-        
+
         // Calculate phase shift (angle of control voltage vector)
         float phase_shift = atan2f(data->v_cntl_q[n], data->v_cntl_d[n]);
 
@@ -264,29 +264,29 @@ void save_results_to_file(const char* filename, SimulationData* data) {
 
         // Write data in the same order as the header
         fprintf(fp, "%d,%lu,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,"
-                   "%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,"
-                   "%.6f,%.6f,%.6f,%.6f,%d,%.6f,%.6f\n",
-               n, (unsigned long)data->time_us[n],
-               (double)data->i_alpha[n], (double)data->i_alpha[n], (double)data->i_beta[n],
-               (double)data->i_alpha[n], (double)data->i_beta[n],
-               (double)data->i_alpha[n], (double)data->i_beta[n],
-               (double)data->i_alpha[n], (double)data->i_beta[n],
-               (double)phase_est,
-               (double)target_phase,
-               (double)data->v_grid_alpha[n],
-               (double)data->v_grid_alpha[n], (double)data->v_grid_beta[n],
-               (double)data->v_grid_d[n], (double)data->v_grid_q[n],
-               (double)data->v_smb_alpha[n], (double)data->v_smb_beta[n],
-               (double)data->v_smb_d[n], (double)data->v_smb_q[n],
-               (double)data->v_cntl_d[n], (double)data->v_cntl_q[n],
-               (double)data->v_cntl_d[n], 0.0,
-               (double)data->v_cntl_q[n], 0.0,
-               (double)v_cntl_alpha, (double)v_cntl_beta,
-               (double)data->v_cntl_mod_index[n],
-               (double)phase_shift,
-               valid,
-               (double)v_cntl_peak,
-               (double)data->v_dc[n]);
+                "%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,"
+                "%.6f,%.6f,%.6f,%.6f,%d,%.6f,%.6f\n",
+                n, (unsigned long)data->time_us[n],
+                (double)data->i_alpha[n], (double)data->i_alpha[n], (double)data->i_beta[n],
+                (double)data->i_alpha[n], (double)data->i_beta[n],
+                (double)data->i_alpha[n], (double)data->i_beta[n],
+                (double)data->i_alpha[n], (double)data->i_beta[n],
+                (double)phase_est,
+                (double)target_phase,
+                (double)data->v_grid_alpha[n],
+                (double)data->v_grid_alpha[n], (double)data->v_grid_beta[n],
+                (double)data->v_grid_d[n], (double)data->v_grid_q[n],
+                (double)data->v_smb_alpha[n], (double)data->v_smb_beta[n],
+                (double)data->v_smb_d[n], (double)data->v_smb_q[n],
+                (double)data->v_cntl_d[n], (double)data->v_cntl_q[n],
+                (double)data->v_cntl_d[n], 0.0,
+                (double)data->v_cntl_q[n], 0.0,
+                (double)v_cntl_alpha, (double)v_cntl_beta,
+                (double)data->v_cntl_mod_index[n],
+                (double)phase_shift,
+                valid,
+                (double)v_cntl_peak,
+                (double)data->v_dc[n]);
     }
 
     fclose(fp);

@@ -1,5 +1,5 @@
-#ifndef PLANT_SIMULATOR_H
-#define PLANT_SIMULATOR_H
+#ifndef PLANT_SIMULATOR2_H
+#define PLANT_SIMULATOR2_H
 
 #include <math.h>
 #include <stdbool.h>
@@ -19,13 +19,13 @@ typedef struct {
     float load_L;
     float R_total;
     float L_total;
-} PlantParams;
+} PlantParams2;
 
 typedef struct {
     float current;    // Current state
-} PlantState;
+} PlantState2;
 
-void PlantSimulator_Init(PlantState* state, PlantParams* params);
-float PlantSimulator_Update(PlantState* state, PlantParams* params, float v_inverter);
+void PlantSimulator_Init2(PlantState2* state, PlantParams2* params);
+float PlantSimulator_Update2(PlantState2* state, PlantParams2* params, float v_inverter);
 
 #endif /* PLANT_SIMULATOR_H */
