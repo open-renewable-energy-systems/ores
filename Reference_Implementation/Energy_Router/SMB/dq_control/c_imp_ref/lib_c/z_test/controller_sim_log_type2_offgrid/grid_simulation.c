@@ -76,7 +76,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
     DQControllerVoltFeedback_Init(&v_controller_state, &v_controller_params);
 
     BetaTransform_1p volt_beta_transform_1p;
-    BetaTransform_1p curr_beta_transform_1p;
+    BetaTransform_1p curr_beta_transform_1p = {0};
 
     BetaTransform_1p_Init(&volt_beta_transform_1p,
                           params->signal_freq,
@@ -88,15 +88,15 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
     float vq_last = 0.0f;
 
     for (int n = 0; n < LEN; n++) {
-        data->time_us[n] = (uint64_t)(n * params->Ts_control * 1000000.0f);
-        float t = data->time_us[n] / 1000000.0f;
+        (data + n)->time_us = (uint64_t)(n * params->Ts_control * 1000000.0f);
+        float t = (data + n)->time_us / 1000000.0f;
         float theta = params->omega * t;                                                                                            // MCU给相位
         float theta_dq = theta - M_PI_2;
 
-        data->i_phase_est[n] = theta;
-        data->v_cntl_tgt_phase[n] = theta;
+        (data + n)->i_phase_est = theta;
+        (data + n)->v_cntl_tgt_phase = theta;
 
-        float v_meas_peak = sqrtf(data->v_grid_alpha[n] * data->v_grid_alpha[n] + data->v_grid_beta[n] * data->v_grid_beta[n]);     // MCU：v_meas_peak=电网电压的幅值(V)
+        float v_meas_peak = sqrtf((data + n)->v_grid_alpha * (data + n)->v_grid_alpha + (data + n)->v_grid_beta * (data + n)->v_grid_beta); // MCU：v_meas_peak=电网电压的幅值(V)
 
 
         ////////////////////////////控制/////////////////////////////////////
@@ -105,18 +105,18 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
             vd_meas = v_meas_peak;
             vq_meas = 0.0f;
         } else { // 如果电压能实时测量
-            dq_transform_1phase(data->v_grid_alpha[n], data->v_grid_beta[n], theta_dq, &vd_meas, &vq_meas);
+            dq_transform_1phase((data + n)->v_grid_alpha, (data + n)->v_grid_beta, theta_dq, &vd_meas, &vq_meas);
         }
 
-        data->v_grid_d[n] = vd_meas;
-        data->v_grid_q[n] = vq_meas;
+        (data + n)->v_grid_d = vd_meas;
+        (data + n)->v_grid_q = vq_meas;
 
         float v_d_ref = V_ref_peak;
         float v_q_ref = 0.0f;
 
-        data->v_ref_d[n] = v_d_ref;
-        data->v_ref_q[n] = v_q_ref;
-        data->v_ref[n]   = V_ref_peak;
+        (data + n)->v_ref_d = v_d_ref;
+        (data + n)->v_ref_q = v_q_ref;
+        (data + n)->v_ref   = V_ref_peak;
 
         DQControllerVoltFeedback_SetReference(&v_controller_state, v_d_ref, v_q_ref);
         DQControllerVoltFeedback_UpdateMeasurements(&v_controller_state, vd_meas, vq_meas);
@@ -139,10 +139,10 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
         dq_voltage.vq = mod_result.vq_adjust;
 
         // Add assignments to data structure
-        data->v_dc[n] = dq_voltage.vdc;
-        data->v_cntl_mod_index[n] = mod_result.index;                                                                               // 输出给MCU调制系数
-        printf("mod_index: %f\n", data->v_cntl_mod_index[n]);
-        data->v_cntl_phase_shift[n] = mod_result.phase_shift;                                                                       // 输出给MCU相位差
+        (data + n)->v_dc = dq_voltage.vdc;
+        (data + n)->v_cntl_mod_index = mod_result.index;                                                                            // 输出给MCU调制系数
+        printf("mod_index: %f\n", (data + n)->v_cntl_mod_index);
+        (data + n)->v_cntl_phase_shift = mod_result.phase_shift;                                                                    // 输出给MCU相位差
         /////////////////////电压反馈控制结束////////////////////////////////////////////
 
         //////////////////////////PWM控制仿真///////////////////////////////////////////
@@ -150,8 +150,8 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
         if (n % params->ratio_cntlFreqReduction == 0)
         {
             inverse_dq_transform_1phase(v_d, v_q, theta_dq,
-                                        &data->v_smb_alpha[n + 1],
-                                        &data->v_smb_beta[n + 1]);
+                                        &(data + n + 1)->v_smb_alpha,
+                                        &(data + n + 1)->v_smb_beta);
             vd_last = v_d;
             vq_last = v_q;
         }
@@ -160,16 +160,16 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
         {
             inverse_dq_transform_1phase(vd_last, vq_last, theta_dq,
-                                        &data->v_smb_alpha[n + 1],
-                                        &data->v_smb_beta[n + 1]);
+                                        &(data + n + 1)->v_smb_alpha,
+                                        &(data + n + 1)->v_smb_beta);
         }
 
         // Store controller outputs
-        data->v_smb_d[n + 1] = v_d;                                                                                                 // data输出给MCU_Log
-        data->v_smb_q[n + 1] = v_q;
+        (data + n + 1)->v_smb_d = v_d;                                                                                              // data输出给MCU_Log
+        (data + n + 1)->v_smb_q = v_q;
 
-        data->v_cntl_d[n] = v_d;
-        data->v_cntl_q[n] = v_q;
+        (data + n)->v_cntl_d = v_d;
+        (data + n)->v_cntl_q = v_q;
 
         // Transform controller outputs back to alpha-beta
         float v_alpha_input, v_beta_input;
@@ -179,34 +179,34 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
         // Use the transformed voltage as input
 
-        data->v_grid_alpha[n + 1] = PlantSimulator_Update2(&plant_state,                                                            // MCU_Log不需要算
-                                    &plant_params,
-                                    v_alpha_input);
+        (data + n + 1)->v_grid_alpha = PlantSimulator_Update2(&plant_state,                                                         // MCU_Log不需要算
+                                       &plant_params,
+                                       v_alpha_input);
 
-        data->v_grid_beta[n + 1]  = BetaTransform_1p_Update(&volt_beta_transform_1p, data->v_grid_alpha[n + 1]);                    // MCU_Log不需要算
+        (data + n + 1)->v_grid_beta  = BetaTransform_1p_Update(&volt_beta_transform_1p, (data + n + 1)->v_grid_alpha);              // MCU_Log不需要算
 
         // Store the plant state
-        data->i_alpha[n + 1] = plant_state.current;                                                                                 // MCU给电流记录
-        data->i_beta[n + 1] = BetaTransform_1p_Update(&curr_beta_transform_1p, data->i_alpha[n + 1]);
+        (data + n + 1)->i_alpha = plant_state.current;                                                                              // MCU给电流记录
+        (data + n + 1)->i_beta = BetaTransform_1p_Update(&curr_beta_transform_1p, (data + n + 1)->i_alpha);
 
-        data->v_smb_alpha[n + 1] = v_alpha_input;
+        (data + n + 1)->v_smb_alpha = v_alpha_input;
         // Update data storage - if you need to store these values
-        data->v_grid_d[n] = vd_meas;
-        data->v_grid_q[n] = vq_meas;
+        (data + n)->v_grid_d = vd_meas;
+        (data + n)->v_grid_q = vq_meas;
 
         // Store phase information
-        data->i_phase_est[n] = theta;
-        data->v_cntl_tgt_phase[n] = theta_dq;
+        (data + n)->i_phase_est = theta;
+        (data + n)->v_cntl_tgt_phase = theta_dq;
 
         // Calculate and store alpha-beta components
         float v_cntl_alpha, v_cntl_beta;
         inverse_dq_transform_1phase(v_d, v_q, theta_dq, &v_cntl_alpha, &v_cntl_beta);
-        data->v_cntl_alpha[n] = v_cntl_alpha;
-        data->v_cntl_beta[n] = v_cntl_beta;
+        (data + n)->v_cntl_alpha = v_cntl_alpha;
+        (data + n)->v_cntl_beta = v_cntl_beta;
 
         // Calculate and store modulation metrics
-        data->v_cntl_peak[n] = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
-        data->v_cntl_valid[n] = (data->v_cntl_peak[n] <= data->v_dc[n]) ? 1.0f : 0.0f;
+        (data + n)->v_cntl_peak = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
+        (data + n)->v_cntl_valid = ((data + n)->v_cntl_peak <= (data + n)->v_dc) ? 1.0f : 0.0f;
         /////////////////////////PWM控制结束//////////////////////////////////////
 
     }
@@ -239,12 +239,12 @@ void save_results_to_file2(const char* filename, SimulationData2* data) {
     // Write data rows
     for (int n = 0; n < data->length; n++) {
         float v_cntl_alpha, v_cntl_beta;
-        float phase_est = data->i_phase_est[n];
+        float phase_est = (data + n)->i_phase_est;
         float target_phase = phase_est - M_PI_2;
 
         inverse_dq_transform_1phase(
-            data->v_cntl_d[n],
-            data->v_cntl_q[n],
+            (data + n)->v_cntl_d,
+            (data + n)->v_cntl_q,
             target_phase,
             &v_cntl_alpha,
             &v_cntl_beta
@@ -254,7 +254,7 @@ void save_results_to_file2(const char* filename, SimulationData2* data) {
         float mod_index = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
 
         // Calculate phase shift (angle of control voltage vector)
-        float phase_shift = atan2f(data->v_cntl_q[n], data->v_cntl_d[n]);
+        float phase_shift = atan2f((data + n)->v_cntl_q, (data + n)->v_cntl_d);
 
         // Calculate peak value (maximum absolute value of alpha/beta components)
         float v_cntl_peak = sqrtf(v_cntl_alpha * v_cntl_alpha + v_cntl_beta * v_cntl_beta);
@@ -266,27 +266,27 @@ void save_results_to_file2(const char* filename, SimulationData2* data) {
         fprintf(fp, "%d,%lu,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,"
                 "%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,"
                 "%.6f,%.6f,%.6f,%.6f,%d,%.6f,%.6f\n",
-                n, (unsigned long)data->time_us[n],
-                (double)data->i_alpha[n], (double)data->i_alpha[n], (double)data->i_beta[n],
-                (double)data->i_alpha[n], (double)data->i_beta[n],
-                (double)data->i_alpha[n], (double)data->i_beta[n],
-                (double)data->i_alpha[n], (double)data->i_beta[n],
+                n, (unsigned long)(data + n)->time_us,
+                (double)(data + n)->i_alpha, (double)(data + n)->i_alpha, (double)(data + n)->i_beta,
+                (double)(data + n)->i_alpha, (double)(data + n)->i_beta,
+                (double)(data + n)->i_alpha, (double)(data + n)->i_beta,
+                (double)(data + n)->i_alpha, (double)(data + n)->i_beta,
                 (double)phase_est,
                 (double)target_phase,
-                (double)data->v_grid_alpha[n],
-                (double)data->v_grid_alpha[n], (double)data->v_grid_beta[n],
-                (double)data->v_grid_d[n], (double)data->v_grid_q[n],
-                (double)data->v_smb_alpha[n], (double)data->v_smb_beta[n],
-                (double)data->v_smb_d[n], (double)data->v_smb_q[n],
-                (double)data->v_cntl_d[n], (double)data->v_cntl_q[n],
-                (double)data->v_cntl_d[n], 0.0,
-                (double)data->v_cntl_q[n], 0.0,
+                (double)(data + n)->v_grid_alpha,
+                (double)(data + n)->v_grid_alpha, (double)(data + n)->v_grid_beta,
+                (double)(data + n)->v_grid_d, (double)(data + n)->v_grid_q,
+                (double)(data + n)->v_smb_alpha, (double)(data + n)->v_smb_beta,
+                (double)(data + n)->v_smb_d, (double)(data + n)->v_smb_q,
+                (double)(data + n)->v_cntl_d, (double)(data + n)->v_cntl_q,
+                (double)(data + n)->v_cntl_d, 0.0,
+                (double)(data + n)->v_cntl_q, 0.0,
                 (double)v_cntl_alpha, (double)v_cntl_beta,
-                (double)data->v_cntl_mod_index[n],
+                (double)(data + n)->v_cntl_mod_index,
                 (double)phase_shift,
                 valid,
                 (double)v_cntl_peak,
-                (double)data->v_dc[n]);
+                (double)(data + n)->v_dc);
     }
 
     fclose(fp);
