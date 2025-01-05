@@ -25,7 +25,7 @@ void init_system_params2(SystemParams2* params) {
     params->Ts_control = 1.0f / params->control_update_freq;
     params->omega = 2.0f * M_PI * params->signal_freq;
     params->I_desired_rms = 6.0f;
-    params->V_desired_rms = 70.0f;
+    params->V_desired_rms = 70.0f;                                                                                                  // MCU调试设置的给定值
     params->R = 0.43f;
     params->L = 0.009f;
     params->sim_time = 2.4f;
@@ -48,7 +48,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
     // Modify controller parameters - increase proportional gain and reduce integral gain
     DQControllerVoltFeedback_Params v_controller_params = {
-        .kp_d = 1.0f,     // Increased from 0.0001
+        .kp_d = 1.0f,     // Increased from 0.0001                                                                                  // MCU需要传控制参数
         .ki_d = 1.0f / params->ratio_cntlFreqReduction, // Reduced from 0.00005
         .kp_q = 1.0f,     // Increased from 0.0001
         .ki_q = 1.0f / params->ratio_cntlFreqReduction, // Reduced from 0.00005
@@ -82,7 +82,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
                           params->signal_freq,
                           params->control_update_freq);
 
-    float V_ref_peak = params->V_desired_rms * sqrtf(2.0f); // Set desired output voltage
+    float V_ref_peak = params->V_desired_rms * sqrtf(2.0f); // Set desired output voltage                                           // MCU调试设置的给定值(直接这里给就可以)
     int LEN = data->length - 1;
     float vd_last = 0.0f;
     float vq_last = 0.0f;
@@ -90,18 +90,18 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
     for (int n = 0; n < LEN; n++) {
         data->time_us[n] = (uint64_t)(n * params->Ts_control * 1000000.0f);
         float t = data->time_us[n] / 1000000.0f;
-        float theta = params->omega * t;
+        float theta = params->omega * t;                                                                                            // MCU给相位
         float theta_dq = theta - M_PI_2;
 
         data->i_phase_est[n] = theta;
         data->v_cntl_tgt_phase[n] = theta;
 
-        float v_meas_peak = sqrtf(data->v_grid_alpha[n] * data->v_grid_alpha[n] + data->v_grid_beta[n] * data->v_grid_beta[n]);
+        float v_meas_peak = sqrtf(data->v_grid_alpha[n] * data->v_grid_alpha[n] + data->v_grid_beta[n] * data->v_grid_beta[n]);     // MCU：v_meas_peak=电网电压的幅值(V)
 
 
         ////////////////////////////控制/////////////////////////////////////
         float vd_meas, vq_meas;
-        if(VOLT_FB_MODE == 0) { // 如果电压只能获得峰值
+        if(VOLT_FB_MODE == 0) { // 如果电压只能获得峰值                                                                             // MCU当前使用
             vd_meas = v_meas_peak;
             vq_meas = 0.0f;
         } else { // 如果电压能实时测量
@@ -130,7 +130,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
         dq_voltage_t dq_voltage = {
             .vd = v_d,
             .vq = v_q,
-            .vdc = 192.0f // 给直流电压
+            .vdc = 192.0f // 给直流电压                                                                                             // MCU给电池电压
         };
 
         ///调制参数跟新：输入为电压dq， 输出为调制系数相位偏移
@@ -140,9 +140,9 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
         // Add assignments to data structure
         data->v_dc[n] = dq_voltage.vdc;
-        data->v_cntl_mod_index[n] = mod_result.index;
+        data->v_cntl_mod_index[n] = mod_result.index;                                                                               // 输出给MCU调制系数
         printf("mod_index: %f\n", data->v_cntl_mod_index[n]);
-        data->v_cntl_phase_shift[n] = mod_result.phase_shift;
+        data->v_cntl_phase_shift[n] = mod_result.phase_shift;                                                                       // 输出给MCU相位差
         /////////////////////电压反馈控制结束////////////////////////////////////////////
 
         //////////////////////////PWM控制仿真///////////////////////////////////////////
@@ -165,7 +165,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
         }
 
         // Store controller outputs
-        data->v_smb_d[n + 1] = v_d;
+        data->v_smb_d[n + 1] = v_d;                                                                                                 // data输出给MCU_Log
         data->v_smb_q[n + 1] = v_q;
 
         data->v_cntl_d[n] = v_d;
@@ -179,14 +179,14 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
         // Use the transformed voltage as input
 
-        data->v_grid_alpha[n + 1] = PlantSimulator_Update(&plant_state,
+        data->v_grid_alpha[n + 1] = PlantSimulator_Update(&plant_state,                                                             // MCU_Log不需要算
                                     &plant_params,
                                     v_alpha_input);
 
-        data->v_grid_beta[n + 1]  = BetaTransform_1p_Update(&volt_beta_transform_1p, data->v_grid_alpha[n + 1]);
+        data->v_grid_beta[n + 1]  = BetaTransform_1p_Update(&volt_beta_transform_1p, data->v_grid_alpha[n + 1]);                    // MCU_Log不需要算
 
         // Store the plant state
-        data->i_alpha[n + 1] = plant_state.current;
+        data->i_alpha[n + 1] = plant_state.current;                                                                                 // MCU给电流记录
         data->i_beta[n + 1] = BetaTransform_1p_Update(&curr_beta_transform_1p, data->i_alpha[n + 1]);
 
         data->v_smb_alpha[n + 1] = v_alpha_input;
