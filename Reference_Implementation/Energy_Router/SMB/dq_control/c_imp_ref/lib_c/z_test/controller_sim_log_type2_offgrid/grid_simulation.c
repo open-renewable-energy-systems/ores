@@ -72,7 +72,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
     PlantState2 plant_state = {0};
     DQControllerVoltFeedback_State v_controller_state;
 
-    PlantSimulator_Init(&plant_state, &plant_params);
+    PlantSimulator_Init2(&plant_state, &plant_params);
     DQControllerVoltFeedback_Init(&v_controller_state, &v_controller_params);
 
     BetaTransform_1p volt_beta_transform_1p;
@@ -179,7 +179,7 @@ void simulate_system2(SystemParams2* params, SimulationData2* data) {
 
         // Use the transformed voltage as input
 
-        data->v_grid_alpha[n + 1] = PlantSimulator_Update(&plant_state,                                                             // MCU_Log不需要算
+        data->v_grid_alpha[n + 1] = PlantSimulator_Update2(&plant_state,                                                            // MCU_Log不需要算
                                     &plant_params,
                                     v_alpha_input);
 
