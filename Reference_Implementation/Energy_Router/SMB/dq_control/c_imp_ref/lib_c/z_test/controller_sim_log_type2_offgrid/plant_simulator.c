@@ -15,8 +15,10 @@ float PlantSimulator_Update2(PlantState2* state, PlantParams2* params, float v_i
     float mod = plant_freq  - (float)(N) * return_freq;
 
     if(abs(mod) > 0.0001f) {
+        #if !(defined COMPILE_APP_Program) && !(defined COMPILE_BL_Program)
         printf("PlantSimulator_Update2: plant_req must be a multiple of return_frq\n");
         exit(1);
+        #endif
     }
     float v_load = 0;
     for (int i = 0; i < N; i++) {

@@ -1,7 +1,7 @@
 #include "log_data_rw2.h"
 #include <string.h>
 
-struct LogData* load_log_data(const char* filename) {
+LogData* load_log_data(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (!file) {
         fprintf(stderr, "Error: Could not open file %s\n", filename);
@@ -20,12 +20,12 @@ struct LogData* load_log_data(const char* filename) {
     data_len--;  // Subtract header line
 
     // Allocate memory for the structure
-    struct LogData* data = (struct LogData*)malloc(sizeof(struct LogData) * data_len);
+    LogData* data = (LogData*)malloc(sizeof(LogData) * data_len);
     if (!data) {
         fclose(file);
         return NULL;
     }
-    memset(data, 0, sizeof(struct LogData) * data_len);         // 清空
+    memset(data, 0, sizeof(LogData) * data_len);         // 清空
     data->length = data_len;
 
     // Reset file position to beginning
@@ -72,25 +72,25 @@ struct LogData* load_log_data(const char* filename) {
     return data;
 }
 
-void cleanup_data(struct LogData* data) {
+void cleanup_data(LogData* data) {
     if (data == NULL) return;
 
     // Free the structure itself
     free(data);
 }
 
-struct LogData* init_log_data(int length) {
+LogData* init_log_data(int length) {
     if (length <= 0) {
         fprintf(stderr, "Error: Invalid length specified\n");
         return NULL;
     }
 
-    struct LogData* data = (struct LogData*)malloc(sizeof(struct LogData) * length);
+    LogData* data = (LogData*)malloc(sizeof(LogData) * length);
     if (!data) {
         return NULL;
     }
 
-    memset(data, 0, sizeof(struct LogData) * length);           // 清空
+    memset(data, 0, sizeof(LogData) * length);           // 清空
     // Initialize length
     data->length = length;
 

@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 // Define the structure
-struct LogData {
+typedef struct  {
     int length;
     uint64_t id;
     uint64_t time_us;
@@ -22,7 +22,7 @@ struct LogData {
     float i_filtered_d;
     float i_filtered_q;
     float i_phase_est;
-    
+
     float i_ref;
     float i_ref_d;
     float i_ref_q;
@@ -35,7 +35,7 @@ struct LogData {
     float v_grid_d;
     float v_grid_q;
     float v_grid_phase;
-    
+
     float v_smb_meas;
     float v_smb_alpha;
     float v_smb_beta;
@@ -67,11 +67,11 @@ struct LogData {
     float v_ref_beta;
 
 
-};
+} LogData;
 
 // Function prototypes
-struct LogData* load_log_data(const char* filename);
-struct LogData* init_log_data(int length);
-void cleanup_data(struct LogData* data);
+LogData* load_log_data(const char* filename);
+LogData* init_log_data(int length);
+void cleanup_data(LogData* data);
 
 #endif /* LOG_DATA_RW_H */

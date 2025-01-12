@@ -6,7 +6,7 @@ int main() {
     init_system_params2(&params);
     
     int n_control_steps = (int)(params.sim_time / params.Ts_control);
-    SimulationData2 *sim_data = allocate_simulation_data2(n_control_steps);
+    LogData *sim_data = allocate_simulation_data2(n_control_steps);
     
     // Run simulation
     simulate_system2(&params, sim_data);

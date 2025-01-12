@@ -17,24 +17,34 @@
 #define GRID_OMEGA (2.0f * M_PI * 50.0f)  // 50Hz grid frequency
 #define VOLT_FB_MODE 0 // 0: feedback based on PEKA, 1: alpha_volt
 
+#ifndef M_PI_2
+#define M_PI_2                      3.1415926f
+#endif
+
+uint32_t            g_data_count;
+float               g_vd_last;
+float               g_vq_last;
 
 
-typedef struct
-{
-    SystemParams2                               params;
-    SimulationData2                             record_data[2];
-    DQControllerVoltFeedback_Params             v_controller_params;
-    PlantParams2                                plant_params;
-    PlantState2                                 plant_state;
-    DQControllerVoltFeedback_State              v_controller_state;
-    BetaTransform_1p                            volt_beta_transform_1p;
-    BetaTransform_1p                            curr_beta_transform_1p;
-    float                                       V_ref_peak;                     // MCU调试设置的给定值(直接这里给就可以)
-    int                                         data_count;
-    float                                       vd_last;
-    float                                       vq_last;
-    int                                         n;
-} SMB_Calculate__;
+#if !(defined COMPILE_APP_Program) && !(defined COMPILE_BL_Program)
+#endif
+
+void init_system_params2(SystemParams2* params) {
+    params->signal_freq = 50.0f;
+    params->plant_sim_freq = 100000.0f;
+    params->control_update_freq = 1000.0f;
+    params->ratio_cntlFreqReduction = 20;
+    params->Ts_plant_sim = 1.0f / params->plant_sim_freq;
+    params->Ts_control = 1.0f / params->control_update_freq;
+    params->omega = 2.0f * M_PI * params->signal_freq;
+    params->I_desired_rms = 6.0f;
+    params->V_desired_rms = 70.0f;                                                                                                  // MCU调试设置的给定值
+    params->R = 0.43f;
+    params->L = 0.009f;
+    params->sim_time = 2.4f;
+    params->load_R = 50.0f;
+    params->load_L = 0.00f;
+}
 
 /*******************************************************************************
  * 函数名称: 初始化 SMB_Calculate 函数
@@ -46,32 +56,33 @@ void Init_SMB_Calculate_type2_offgrid(SMB_Calculate__ *p_smb_calculate)
 {
     init_system_params2(&p_smb_calculate->params);
     // Modify controller parameters - increase proportional gain and reduce integral gain
-    p_smb_calculate->v_controller_params.kp_d                = 1.0f;                                                         // Increased from 0.0001  // MCU需要传控制参数
-    p_smb_calculate->v_controller_params.ki_d                = 1.0f / p_smb_calculate->params.ratio_cntlFreqReduction;    // Reduced from 0.00005
-    p_smb_calculate->v_controller_params.kp_q                = 1.0f;                                                         // Increased from 0.0001
-    p_smb_calculate->v_controller_params.ki_q                = 1.0f / p_smb_calculate->params.ratio_cntlFreqReduction;    // Reduced from 0.00005
-    p_smb_calculate->v_controller_params.Ts                  = p_smb_calculate->params.Ts_control;
-    p_smb_calculate->v_controller_params.integral_max        = 100.0f;                                                       // Reduced from 50.0
-    p_smb_calculate->v_controller_params.integral_min        = -100.0f;                                                      // Reduced from -50.0
+    p_smb_calculate->v_controller_params.kp_d               = 1.0f;                                                         // Increased from 0.0001  // MCU需要传控制参数
+    p_smb_calculate->v_controller_params.ki_d               = 1.0f / p_smb_calculate->params.ratio_cntlFreqReduction;    // Reduced from 0.00005
+    p_smb_calculate->v_controller_params.kp_q               = 1.0f;                                                         // Increased from 0.0001
+    p_smb_calculate->v_controller_params.ki_q               = 1.0f / p_smb_calculate->params.ratio_cntlFreqReduction;    // Reduced from 0.00005
+    p_smb_calculate->v_controller_params.Ts                 = p_smb_calculate->params.Ts_control;
+    p_smb_calculate->v_controller_params.integral_max       = 100.0f;                                                       // Reduced from 50.0
+    p_smb_calculate->v_controller_params.integral_min       = -100.0f;                                                      // Reduced from -50.0
     // Initialize components
-    p_smb_calculate->plant_params.L                          = p_smb_calculate->params.L;
-    p_smb_calculate->plant_params.R                          = p_smb_calculate->params.R;
-    p_smb_calculate->plant_params.load_L                     = p_smb_calculate->params.load_L;
-    p_smb_calculate->plant_params.load_R                     = p_smb_calculate->params.load_R;
-    p_smb_calculate->plant_params.Ts                         = p_smb_calculate->params.Ts_plant_sim;
-    p_smb_calculate->plant_params.omega                      = p_smb_calculate->params.omega;
-    p_smb_calculate->plant_params.plant_sim_freq             = p_smb_calculate->params.plant_sim_freq;
-    p_smb_calculate->plant_params.control_update_freq        = p_smb_calculate->params.control_update_freq;
+    p_smb_calculate->plant_params.L                         = p_smb_calculate->params.L;
+    p_smb_calculate->plant_params.R                         = p_smb_calculate->params.R;
+    p_smb_calculate->plant_params.load_L                    = p_smb_calculate->params.load_L;
+    p_smb_calculate->plant_params.load_R                    = p_smb_calculate->params.load_R;
+    p_smb_calculate->plant_params.Ts                        = p_smb_calculate->params.Ts_plant_sim;
+    p_smb_calculate->plant_params.omega                     = p_smb_calculate->params.omega;
+    p_smb_calculate->plant_params.plant_sim_freq            = p_smb_calculate->params.plant_sim_freq;
+    p_smb_calculate->plant_params.control_update_freq       = p_smb_calculate->params.control_update_freq;
     PlantSimulator_Init2(&p_smb_calculate->plant_state, &p_smb_calculate->plant_params);
     DQControllerVoltFeedback_Init(&p_smb_calculate->v_controller_state, &p_smb_calculate->v_controller_params);
     memset(&p_smb_calculate->curr_beta_transform_1p, 0, sizeof(BetaTransform_1p));
     BetaTransform_1p_Init(&p_smb_calculate->volt_beta_transform_1p,
                           p_smb_calculate->params.signal_freq,
                           p_smb_calculate->params.control_update_freq);
-    p_smb_calculate->V_ref_peak                                 = p_smb_calculate->params.V_desired_rms * sqrtf(2.0f);       // Set desired output voltage // MCU调试设置的给定值(直接这里给就可以)
-    p_smb_calculate->data_count                                 = p_smb_calculate->record_data[0].length - 1;
-    p_smb_calculate->vd_last                                    = 0.0f;
-    p_smb_calculate->vq_last                                    = 0.0f;
+    g_data_count                                            = p_smb_calculate->record_data[0].length - 1;
+    g_vd_last                                               = 0.0f;
+    g_vq_last                                               = 0.0f;
+    p_smb_calculate->vdc                                    = 192.0f;
+    p_smb_calculate->V_ref_peak                             = p_smb_calculate->params.V_desired_rms * sqrtf(2.0f);       // Set desired output voltage // MCU调试设置的给定值(直接这里给就可以)
 }
 
 
@@ -81,12 +92,33 @@ void Init_SMB_Calculate_type2_offgrid(SMB_Calculate__ *p_smb_calculate)
  * 返回值:
  * 备注:
 *******************************************************************************/
-modulation_result_t SMB_Cal_Feedback_Fun_type2_offgrid(SMB_Calculate__ *p_smb_calculate)
+modulation_result_t SMB_Cal_Feedback_Fun_type2_offgrid(SMB_Calculate__ *p_smb_calculate, bool en_simulation)
 {
-    p_smb_calculate->record_data[0].time_us = (uint64_t)(p_smb_calculate->n * p_smb_calculate->params.Ts_control * 1000000.0f);
-    float t = p_smb_calculate->record_data[0].time_us / 1000000.0f;
-    float theta = p_smb_calculate->params.omega * t;                                                                                            // MCU给相位
-    float theta_dq = theta - M_PI_2;
+    float t;
+    float theta;
+    float theta_dq;
+    // if(en_simulation)
+    // {
+    //     // 仿真：
+    // }
+    // else
+    // {
+    //     // MCU：
+    // }
+    if(en_simulation)
+    {
+        // 仿真：
+        p_smb_calculate->record_data[0].time_us = (uint64_t)(p_smb_calculate->n * p_smb_calculate->params.Ts_control * 1000000.0f);
+        t = p_smb_calculate->record_data[0].time_us / 1000000.0f;
+        theta = p_smb_calculate->params.omega * t;
+    }
+    else
+    {
+        // MCU：
+        p_smb_calculate->record_data[0].time_us = p_smb_calculate->time_us;
+        theta = p_smb_calculate->theta;                                         // MCU给相位
+    }
+    theta_dq = theta - M_PI_2;
 
     p_smb_calculate->record_data[0].i_phase_est = theta;
     p_smb_calculate->record_data[0].v_cntl_tgt_phase = theta;
@@ -125,7 +157,7 @@ modulation_result_t SMB_Cal_Feedback_Fun_type2_offgrid(SMB_Calculate__ *p_smb_ca
     dq_voltage_t dq_voltage = {
         .vd = v_d,
         .vq = v_q,
-        .vdc = 192.0f // 给直流电压                                                                                             // MCU给电池电压
+        .vdc = p_smb_calculate->vdc, // 给直流电压                  // MCU给电池电压
     };
 
     ///调制参数跟新：输入为电压dq， 输出为调制系数相位偏移
@@ -147,14 +179,14 @@ modulation_result_t SMB_Cal_Feedback_Fun_type2_offgrid(SMB_Calculate__ *p_smb_ca
         inverse_dq_transform_1phase(v_d, v_q, theta_dq,
                                     &(p_smb_calculate->record_data[1]).v_smb_alpha,
                                     &(p_smb_calculate->record_data[1]).v_smb_beta);
-        p_smb_calculate->vd_last = v_d;
-        p_smb_calculate->vq_last = v_q;
+        g_vd_last = v_d;
+        g_vq_last = v_q;
     }
 
     else
 
     {
-        inverse_dq_transform_1phase(p_smb_calculate->vd_last, p_smb_calculate->vq_last, theta_dq,
+        inverse_dq_transform_1phase(g_vd_last, g_vq_last, theta_dq,
                                     &(p_smb_calculate->record_data[1]).v_smb_alpha,
                                     &(p_smb_calculate->record_data[1]).v_smb_beta);
     }
@@ -210,56 +242,73 @@ modulation_result_t SMB_Cal_Feedback_Fun_type2_offgrid(SMB_Calculate__ *p_smb_ca
 
 
 
-void init_system_params2(SystemParams2* params) {
-    params->signal_freq = 50.0f;
-    params->plant_sim_freq = 100000.0f;
-    params->control_update_freq = 1000.0f;
-    params->ratio_cntlFreqReduction = 20;
-    params->Ts_plant_sim = 1.0f / params->plant_sim_freq;
-    params->Ts_control = 1.0f / params->control_update_freq;
-    params->omega = 2.0f * M_PI * params->signal_freq;
-    params->I_desired_rms = 6.0f;
-    params->V_desired_rms = 70.0f;                                                                                                  // MCU调试设置的给定值
-    params->R = 0.43f;
-    params->L = 0.009f;
-    params->sim_time = 2.4f;
-    params->load_R = 50.0f;
-    params->load_L = 0.00f;
-}
 
-// Replace SimulationData2 with LogData struct
 
-SimulationData2* allocate_simulation_data2(int length) {
-    SimulationData2* data = init_log_data(length);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if !(defined COMPILE_APP_Program) && !(defined COMPILE_BL_Program)
+
+
+// Replace LogData with LogData struct
+
+LogData* allocate_simulation_data2(int length) {
+    LogData* data = init_log_data(length);
     return data;
 }
 
 float k = 1.0f;
 
-void simulate_system2(SystemParams2* params, SimulationData2* data)
+void simulate_system2(SystemParams2* params, LogData* data)
 {
     SMB_Calculate__     smb_calculate;
-    memcpy(smb_calculate.record_data, data, sizeof(SimulationData2));
+    memcpy(smb_calculate.record_data, data, sizeof(LogData));
     Init_SMB_Calculate_type2_offgrid(&smb_calculate);
-    for (int n = 0; n < smb_calculate.data_count; n++)
+    for (int n = 0; n < g_data_count; n++)
     {
         smb_calculate.n                             = n;
-        SMB_Cal_Feedback_Fun_type2_offgrid(&smb_calculate);
+        SMB_Cal_Feedback_Fun_type2_offgrid(&smb_calculate, true);
         memcpy(data + n, &smb_calculate.record_data, sizeof(smb_calculate.record_data));
-        memcpy(&smb_calculate.record_data[0], &smb_calculate.record_data[1], sizeof(SimulationData2));              // 要用+1的值覆盖掉这一次的值
-        memset(&smb_calculate.record_data[1], 0, sizeof(SimulationData2));                                          // 将+1的值清空
+        memcpy(&smb_calculate.record_data[0], &smb_calculate.record_data[1], sizeof(LogData));              // 要用+1的值覆盖掉这一次的值
+        memset(&smb_calculate.record_data[1], 0, sizeof(LogData));                                          // 将+1的值清空
     }
     printf("Simulation completed.\n");
     save_results_to_file2("simulation_results.csv", data);
 }
 
-void free_simulation_data2(SimulationData2* data) {
+void free_simulation_data2(LogData* data) {
 
     cleanup_data(data);
 }
 
 // Update save_results_to_file2 function to use new structure
-void save_results_to_file2(const char* filename, SimulationData2* data) {
+void save_results_to_file2(const char* filename, LogData* data) {
     FILE* fp = fopen(filename, "w");
     if (!fp) {
         printf("Error opening file %s\n", filename);
@@ -330,4 +379,13 @@ void save_results_to_file2(const char* filename, SimulationData2* data) {
     fclose(fp);
     printf("Results saved to %s\n", filename);
 }
+
+#endif
+
+
+
+
+
+
+
 
