@@ -2,10 +2,10 @@
 
 Continue to design and develop the Open Renewable Energy System standard architecture, extensible Application Programming Interfaces (API) and Protocol standards with the reference implementation. The planned deliverables include a ORES brand white box AC Battery ESS, dis-aggregated and plug-and-play renewable energy demonstration system with third part devices, architecture and design documents. Including specifically:
 
-- **White Box ESS, ORES brand, AC-Battery**
+- **White Box ESS**, ORES brand AC-Battery
   - The deive of the AC Battery: North Bound (AC IN) can easily plug into the 110V power socket, or connect directly to micro inverter with solar panels. Its South Bound (AC OUT) should have 110V socket for loads, like refrigerator to plug in. In future the white box could have different model, different modular configuration from different vendors, and upgrade revisions.
 
-- **Dis-Aggregated and Plug-and-Play Demonstration System**
+- Dis-Aggregated and Plug-and-Play **Demonstration System**
   - Plug and play ORES compliant devices and systems that work in North America, Europe regions.
   - The demonstration system: including solar panel, battery, inverter, charger, and control component (BMS+ wifi communication protocol adaption), with third party devices, operation with monitoring app (Home Assistant).
   - It exhibits plug and play, accommodate on/off grid use cases, and **multi-vendor support** (open source version of the Balcony system). 
