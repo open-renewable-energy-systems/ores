@@ -3,9 +3,9 @@
 Continue to design and develop the Open Renewable Energy System standard architecture, extensible Application Programming Interfaces (API) and Protocol standards with the reference implementation. The planned deliverables include a ORES brand white box AC Battery ESS, dis-aggregated and plug-and-play renewable energy demonstration system with third part devices, architecture and design documents. Including specifically:
 
 - **MVP - Minimum Viable Product**
-  - **White Box ESS** (Energy Storage System): ORES brand AC-Battery. North Bound (AC IN) can easily plug into the 110V - 240V single or splite phase power socket, or connect directly to micro inverter with solar panels. Its South Bound (AC OUT) should have 110V socket for loads, like refrigerator to plug in. In future the white box could have different model, different modular configuration from different vendors, and upgrade revisions.
-  - **Protocol Adapter Dangle**: with (ESPHome) MCU hardware and firmware for protocal adaption. One side with RS-485 Modus, the other side with WiFi, for the device to communicate with the controller.
-  - Controller: Rasperberry PI (with Home Assistant), **Software Defined EMS**  
+  - **White Box ESS** (Energy Storage System): **ORES brand AC-Battery**. In addition to the general features, its North Bound (AC IN) can easily plug into the 110V - 240V single or splite phase power socket, or connect directly to micro inverter with solar panels. Its South Bound (AC OUT) should have 110V socket for loads, like refrigerator to plug in. In future the white box could have different model, different modular configuration from different vendors, and upgrade revisions.
+  - **Protocol Adapter Dangle**: with (ESPHome) MCU hardware and firmware for protocol adaption. One side with RS-485 Modbus, the other side with WiFi, for the device to communicate with the controller.
+  - Controller: Raspberry PI (with Home Assistant), **Software Defined EMS**  
 
 - Dis-Aggregated and Plug-and-Play **Demonstration System** trials
   - Plug and play ORES compliant devices and systems that work in North America, Europe regions.
