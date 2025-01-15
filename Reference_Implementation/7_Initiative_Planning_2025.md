@@ -4,8 +4,8 @@ Continue to design and develop the Open Renewable Energy System standard archite
 
 - **MVP - Minimum Viable Product**
   - **White Box ESS**, MVP, ORES brand AC-Battery: North Bound (AC IN) can easily plug into the 110V - 240V single or splite phase power socket, or connect directly to micro inverter with solar panels. Its South Bound (AC OUT) should have 110V socket for loads, like refrigerator to plug in. In future the white box could have different model, different modular configuration from different vendors, and upgrade revisions.
-  - Protocol Adapter Dangle: one side with RS-485 Modus, the other side with WiFi, for the device to communicate with the controller.
-  - Controller: Software Defined EMS  
+  - **Protocol Adapter Dangle**: with (ESPHome) MCU hardware and firmware for protocal adaption. One side with RS-485 Modus, the other side with WiFi, for the device to communicate with the controller.
+  - Controller: **Software Defined EMS**  
 
 - Dis-Aggregated and Plug-and-Play **Demonstration System** trials
   - Plug and play ORES compliant devices and systems that work in North America, Europe regions.
