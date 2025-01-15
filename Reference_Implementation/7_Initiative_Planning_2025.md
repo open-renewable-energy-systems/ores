@@ -16,7 +16,7 @@ Continue to design and develop the Open Renewable Energy System standard archite
 
 - Standardization and Ecosystem development:
   - Software Defined ATS, UL lab certificate. 
-  -**Electrical Rack Cabinet** standard (Open19), structural, cable, batteries, telemetry information，environmental, safety, design certifcate,etc.
+  - **Electrical Rack Cabinet** standard (Open19), structural, cable, batteries, telemetry information，environmental, safety, design certifcate,etc.
   - Multiple hardware vendor support of hardware and software.
 
 - Architecture discussion and white composition effort for vision promotion and explore VPP implementation with potential utility company’s involvement.
