@@ -40,6 +40,15 @@
    - Value Generated per Year: $7.6 x 365 = $2800
    - About **3 years** ROI (Return Of Investment).
 
+
+## SunGoldPower #2, 2025-01-30
+
+1. **The Kit**
+   - Off-Grid Solar Kit 10kW 48VDC 120V/240V LifePo4 25KWH Lithium Battery 2 x 6 x 415 Watts Solar Panels
+
+2. **The Cabinet**
+   - https://www.currentconnected.com/product/sok-12-slot-outdoor-battery-rack/?srsltid=AfmBOop1aOMCDlqQGGd4roljEBWLIODLcKApVv-zM0UxMrz0fTLQPt6Q
+
 ## Enphase，(To Do)  
 
 - https://enphase.com/homeowners
