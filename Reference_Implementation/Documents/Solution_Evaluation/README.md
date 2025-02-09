@@ -19,20 +19,24 @@
 
    - For Information:
      - 68 AC output phase mode # 180 (default) represents the split-phase mode
-   
-3. **EV Charging**
+
+3. **Maintenance**
+   - To set 63 to ENA: turn off the inverter power button and then set parameter 63=ENA first. Then turn on the inverter to see if it can charge your EV normally.
+   - To set your inverter back to default. Here is the back-to-default way: Only connect the inverter to the battery, and press the inverter (up and down) button simultaneously for more than 3 seconds, the inverter will make a beeping sound or a white frame will appear. Then turn off the inverter for 3 minutes, then restart it. 
+
+5. **EV Charging**
    - Mostly regulated by the residential 12A/32A current max for Tesla Model 3.
      - One phase 120V is about 12A/1kW charging power.
      - Split phase 240V is about charging 32A current / 7kW power limit.
 
-4. **Brief Cost** (USD)
+6. **Brief Cost** (USD)
    - Kit: $6000
    - Accessories: $1000
    - Installation: $2000
    - License and Permit application if using grid AC input for charge: $1000 (and the procedure takes time)  
    - Total: $7900 if considering 30% tax return for hardware purchase
 
-5. **Initial Value Proposition Analysis**
+7. **Initial Value Proposition Analysis**
    - For ESS (Energy Storage System), two batteries (48VDC 100AH each) can hold up to 10kWH energy with an active capacity of 8kWH.
    - Solar power generates an average at 5 hours per day, varying from 0-3 hours during winter to 6-8 hours during summer，for a total of about 15kWH per day. Therefore, solar power can fully charge the ESS and provide an extra supply for home usage during summer, but may not be enough to charge the ESS during winter or rainy seasons.
    - Energy Generation per Day：3kW x 5Hours = 15kWH
