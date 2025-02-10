@@ -23,6 +23,9 @@
 3. **Maintenance**
    - To set 63 to ENA: turn off the inverter power button and then set parameter 63=ENA first. Then turn on the inverter to see if it can charge your EV normally.
    - To set your inverter back to default. Here is the back-to-default way: Only connect the inverter to the battery, and press the inverter (up and down) button simultaneously for more than 3 seconds, the inverter will make a beeping sound or a white frame will appear. Then turn off the inverter for 3 minutes, then restart it. 
+   - To recalibrate SOC：
+        Method 1: Charge each battery alone with 58.4V charging voltage, charge it until it stops after charging protection, and then BMS will recalibrate SOC automatically.
+        Method 2: Discharge each battery with load all the way to the battery discharge protection, also can recalibrate the SOC. 
 
 5. **EV Charging**
    - Mostly regulated by the residential 12A/32A current max for Tesla Model 3.
