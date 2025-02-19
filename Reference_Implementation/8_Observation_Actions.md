@@ -4,7 +4,7 @@
 - Demo system deployment.
   - ![Deployment](./Devices/images/demo_deployment.png)
 - Cost analysis.
-  - ![Deployment](./Devices/images/cost_analysis.png)
+  - ![Deployment](./Devices/images/cost_analysis.jpg)
 
 - **Actions** for an open and standardized DIY plug and play system, we have below aspecs to address:
   - Hardware device level: cabinet, energy router, ESS device technology innovation. the standardized cabinet is the key value proposition in between device manufactures and home owners. 
