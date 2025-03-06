@@ -2,6 +2,8 @@
 
 ## SunGoldPower, 2024-08-23
 
+https://solarequipment.energy.ca.gov/Home/InvertersList?ManufacturerID=Sun+Gold+Power+Inc&ModelNameID=-1&Submit=Search&Rows=25
+
 1. **The Kit**
    - Off-Grid Solar Kit 8000W 48VDC 120V/240V LifePo4 10.24KWH Lithium Battery 8 X 415 Watts Solar Panels
    - https://sungoldpower.com/products/off-grid-solar-kit-8000w-48vdc-120v-240v-lifepo4-10-24kwh-lithium-battery-8-x-415-watts-solar-panels-sgr-8k10e?gad_source=1&gclid=Cj0KCQjwsuSzBhCLARIsAIcdLm6sxmwi9g3GgTIcpTyADAkzXtL3KBy4b-EfUvwdEKpPcPJ3DVqQ4wYaAqNPEALw_wcB
