@@ -2,7 +2,7 @@
 
 ## SunGoldPower, 2024-08-23
 
-https://solarequipment.energy.ca.gov/Home/InvertersList?ManufacturerID=Sun+Gold+Power+Inc&ModelNameID=-1&Submit=Search&Rows=25
+California list: https://solarequipment.energy.ca.gov/Home/InvertersList?ManufacturerID=Sun+Gold+Power+Inc&ModelNameID=-1&Submit=Search&Rows=25
 
 1. **The Kit**
    - Off-Grid Solar Kit 8000W 48VDC 120V/240V LifePo4 10.24KWH Lithium Battery 8 X 415 Watts Solar Panels
@@ -54,6 +54,7 @@ https://solarequipment.energy.ca.gov/Home/InvertersList?ManufacturerID=Sun+Gold+
 
 1. **The Kit**
    - Off-Grid Solar Kit 10kW 48VDC 120V/240V LifePo4 25KWH Lithium Battery 2 x 6 x 415 Watts Solar Panels
+   - https://sungoldpower.com/products/off-grid-solar-kit-12-x-550-watts-solar-panels-25-6kwh-lithium-battery-10kw-solar-inverter-48vdc-120v-240v-sgr-10k25s?_pos=1&_sid=c7dbf2232&_ss=r&variant=43061750628489
 
 2. **The Cabinet**
    - https://www.currentconnected.com/product/sok-12-slot-outdoor-battery-rack/?srsltid=AfmBOop1aOMCDlqQGGd4roljEBWLIODLcKApVv-zM0UxMrz0fTLQPt6Q
