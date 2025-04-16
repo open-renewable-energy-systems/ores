@@ -16,4 +16,4 @@
   - Compatible communication and interconnection between devices and controller within the system, "Energy IoT".
   - Software Defined EMS, various application scenario policy enforcement, to implement S2.
   - System installation deployment, safety monitoring and operation maintenance.
-  - Battery on-line, off-line safety and performance analysis.
+  - Battery on-line, off-line safety and performance evaluation and analysis.
