@@ -1,6 +1,6 @@
 12/1/2025
 
-## Goal
+## Goal / Why
 1.Commercial Production
 - The strong trend for DIY battery module
 - https://www.youtube.com/watch?v=aH5Y_gJXOsI&t=226s
@@ -12,8 +12,8 @@
 - SMB disruptive BMS  
 - As the development base for SMB (ORES/DEGCent)
 
-## Phase One Prototyping
-1.JK（极空）BMS Home Energy Storage BMS, 1A Active Balance
+## Phase One Prototyping / How
+1.With JK（极空）BMS Home Energy Storage BMS, 1A Active Balance
 
 ![JK BMS](./images/jk_bms.png)
 
@@ -27,7 +27,7 @@
 
 - https://www.amazon.com/Lifepo4-Equalizer-Balancer-Inductive-Transfer/dp/B09C3J5TN3/ref=sr_1_14?crid=1GF9MKU5099AR&dib=eyJ2IjoiMSJ9.F9M1ckcHrVk23OIYpxB0ZbczuvPo4ugIVpxV7-QrjfuJOD5n30pdxMxLXWTIWFMEjmGwGWURzAjJtdUscE6_KN3kuxgmsCbaT_owNpOZtIFu_sr-2c3_E4v8jXzXgTeI9jHd8ZEXkvUF7edCcoQkhH80ICU1aLZ-Pzaz63rezdkmp6LR9oBYPbFa1xzwMOUeKZgzdye8x3mE1eu8zkiGjPW2zYwQom0z9fUujEV7lbE.BXcc4C9ttAG-SamEuKj3XIqWm0PYZ0CERGDKVHQnjTM&dib_tag=se&keywords=16s%2Bbms%2Blifepo4%2B48v&qid=1764473567&sprefix=%2Caps%2C131&sr=8-14&th=1
 
-## 3 Way Collaboration
+## 3 Way Collaboration（Proposal）
 1.Prototyping (ORES/DEGCent), current, in about one month
 - Total ESS
 - Testing bed
