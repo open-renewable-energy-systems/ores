@@ -41,7 +41,6 @@
 3.Demo System (Energy IoT), in about half year
 
 4.Comercial production, in about one year
-- China
 - CA, USA
 
   
