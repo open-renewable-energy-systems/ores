@@ -28,7 +28,7 @@
 - https://www.amazon.com/Lifepo4-Equalizer-Balancer-Inductive-Transfer/dp/B09C3J5TN3/ref=sr_1_14?crid=1GF9MKU5099AR&dib=eyJ2IjoiMSJ9.F9M1ckcHrVk23OIYpxB0ZbczuvPo4ugIVpxV7-QrjfuJOD5n30pdxMxLXWTIWFMEjmGwGWURzAjJtdUscE6_KN3kuxgmsCbaT_owNpOZtIFu_sr-2c3_E4v8jXzXgTeI9jHd8ZEXkvUF7edCcoQkhH80ICU1aLZ-Pzaz63rezdkmp6LR9oBYPbFa1xzwMOUeKZgzdye8x3mE1eu8zkiGjPW2zYwQom0z9fUujEV7lbE.BXcc4C9ttAG-SamEuKj3XIqWm0PYZ0CERGDKVHQnjTM&dib_tag=se&keywords=16s%2Bbms%2Blifepo4%2B48v&qid=1764473567&sprefix=%2Caps%2C131&sr=8-14&th=1
 
 ## 3 Way Collaboration
-1.Prototyping (ORES/DEGCent), current, in one month
+1.Prototyping (ORES/DEGCent), current, in about one month
 - Total ESS
 - Testing bed
 - Using JK BMS
@@ -36,11 +36,11 @@
 - 2kW inverter
 - Charger
 
-2.Software/Embedded/Firmware base (Libre BMS) , in months
+2.Software/Embedded/Firmware + Core Hardware base (Libre BMS) , in about months
 
-3.Demo system (Energy IoT), half year
+3.Demo System (Energy IoT), in about half year
 
-4.Comercial production, about one year
+4.Comercial production, in about one year
 - China
 - CA, USA
 
