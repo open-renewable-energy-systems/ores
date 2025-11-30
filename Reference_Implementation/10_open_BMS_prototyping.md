@@ -38,7 +38,7 @@
 
 2.Software/Embedded/Firmware base (Libre BMS) , in months
 
-3. Demo system (Energy IoT), half year
+3.Demo system (Energy IoT), half year
 
 4.Comercial production, about one year
 - China
