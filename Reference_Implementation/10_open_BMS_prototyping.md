@@ -43,4 +43,20 @@
 4.Comercial production, in about one year
 - CA, USA
 
-  
+## 4 Planning and Milestone
+1.BOM ready, Feb 2026
+- BMS
+- Cells
+- Out door cabinet
+- Inverter
+- Charger
+
+2.POC, April 2026
+- fundamental integration with EMS
+- Libre BMS bug fix support
+- may have no communication with inverter 
+
+3.Development and Testing, August 2026
+- Communication with inverter
+
+
