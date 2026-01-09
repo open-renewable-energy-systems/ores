@@ -52,11 +52,12 @@
 - Charger
 
 2.POC, April 2026
-- fundamental integration with EMS
+- Fundamental integration with EMS
 - Libre BMS bug fix support
-- may have no communication with inverter 
+- Attend the Climate Week demo
+- May have no communication with inverter 
 
-3.Development and Testing, August 2026
+3.Further Development and Testing, August 2026
 - Communication with inverter
 
 
