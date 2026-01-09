@@ -1,4 +1,4 @@
-12/1/2025
+12/1/2025, collaboration with EIOT and EnAccess/LibreBMS
 
 ## Goal / Why
 1.Commercial Production
