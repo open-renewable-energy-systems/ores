@@ -10,3 +10,8 @@ For active load balancing, refer to https://github.com/DoganM95/CN3302-ETA3000-2
 - button: this device/driver implements 3-second long-press detection via interrupt.
 - leds: this device/driver manages charge/discharge bms/status indicators via a dedicated thread.
 - oled: this device/driver handles real-time bms data visualization via a dedicated thread.
+
+- Q: Which OLED device should I use/buy?
+- A: In theory, one with ssd1306 should work. However, it would share the i2c bus with the BMS AFE, so I'm not sure if I would really use it.
+- Q: The funtion for communication with external (laptop) is by Zephyr/ThingSet?
+- A: Yes, ThingSet over serial or CAN. Or just use the mobile phone app. ThingSet App is available in the Android store. Apple is not yet supported.
