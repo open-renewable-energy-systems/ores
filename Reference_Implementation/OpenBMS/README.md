@@ -1,3 +1,16 @@
+2026-05-07
+
+## Working progress update
+
+- EV 18650 battery & Tesla Roadster BMB (Battery Monitor Board)，https://github.com/teslamotors/roadster
+
+![18650 BMB](./EV_18650_Battery_BMS.png)
+
+- Storage LFP battery & testbed setup
+
+![LFP Testbed](./Storage_LFP_Battery.png)
+
+
 2026-01-17
 
 For active load balancing, refer to https://github.com/DoganM95/CN3302-ETA3000-2S-Charger-Balancer
