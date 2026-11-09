@@ -82,3 +82,12 @@ The project seeks additional expertise in utilities, policy, regulations, and ha
 - Q2 2024: Develop a hardware reference implementation and a functional demo system, targeting a showcase at the LF Energy Summit.
 - Q3 2024: Achieve multi-vendor interoperability, expand hardware vendor participation, and initiate product commercialization.
 - Q4 2024: Cultivate an ecosystem of vendor and hardware adoptions for commercial deployment. Begin exploring ORES applications beyond residential to commercial and industrial sectors.
+
+## Licensing
+
+The ORES Working Group operates under the Community Specification model:
+
+- Specifications and other non-code materials are licensed under the [Community Specification License 1.0](../Community_Specification_License.md).
+- Source code, including sample or reference code in specifications, is licensed under [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) unless otherwise marked.
+- Contributions are made under the [Community Specification Contributor License Agreement 1.0](../Contributor_License_Agreement.md) and governed by the [Community Specification Governance Policy 1.0](../Governance.md) and [Contribution Policy 1.0](../CONTRIBUTING.md).
+- See [License.md](../License.md), [Scope.md](../Scope.md), and [Notices.md](../Notices.md) at the repository root.
