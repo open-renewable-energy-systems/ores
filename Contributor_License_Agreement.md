@@ -8,7 +8,7 @@ By making a Contribution to this repository, I agree to the terms of the followi
 
 (c) Community Specification Contribution Policy 1.0 ([CONTRIBUTING.md](CONTRIBUTING.md))
 
-(d) [LF Energy Code of Conduct](https://lfprojects.org/policies/code-of-conduct/)
+(d) Community Specification Code of Conduct ([Code_of_Conduct.md](Code_of_Conduct.md))
 
 
 In addition, for source code contributions, I certify that:
